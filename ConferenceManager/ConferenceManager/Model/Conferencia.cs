@@ -1,12 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConferenceManager.Model
 {
-    class Conferência
+    class Conferencia
     {
         public string Nome { get; set; }
         public int AnoRealizacao { get; set; }

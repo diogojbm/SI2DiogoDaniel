@@ -42,13 +42,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Concrete\ArtigoRepository.cs" />
+    <Compile Include="Concrete\ConferenciaRepository.cs" />
+    <Compile Include="Concrete\FicheiroRepository.cs" />
+    <Compile Include="Concrete\InscricaoRepository.cs" />
+    <Compile Include="Concrete\InstituicaoRepository.cs" />
+    <Compile Include="Concrete\RevisaoRepository.cs" />
+    <Compile Include="Concrete\SubmissaoRepository.cs" />
+    <Compile Include="Concrete\UtilizadorRepository.cs" />
+    <Compile Include="DAL\IContext.cs" />
+    <Compile Include="DAL\IRepository.cs" />
     <Compile Include="Model\Artigo.cs" />
-    <Compile Include="Model\Conferência.cs" />
-    <Compile Include="Model\Inscrição.cs" />
+    <Compile Include="Model\Conferencia.cs" />
+    <Compile Include="Model\Inscricao.cs" />
     <Compile Include="Model\Ficheiro.cs" />
-    <Compile Include="Model\Instituição.cs" />
-    <Compile Include="Model\Revisão.cs" />
-    <Compile Include="Model\Submissão.cs" />
+    <Compile Include="Model\Instituicao.cs" />
+    <Compile Include="Model\Revisao.cs" />
+    <Compile Include="Model\Submissao.cs" />
     <Compile Include="Model\Utilizador.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -57,8 +67,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Concrete\" />
-    <Folder Include="DAL\" />
     <Folder Include="Mapper\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

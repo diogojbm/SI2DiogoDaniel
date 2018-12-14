@@ -1,12 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConferenceManager.Model
+﻿namespace ConferenceManager.Model
 {
-    class Revisão
+    class Revisao
     {
         public int NotaMinima { get; set; }
         public int Nota { get; set; }
