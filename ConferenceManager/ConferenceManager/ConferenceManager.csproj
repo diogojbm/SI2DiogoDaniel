@@ -52,6 +52,7 @@
     <Compile Include="Concrete\UtilizadorRepository.cs" />
     <Compile Include="DAL\IContext.cs" />
     <Compile Include="DAL\IRepository.cs" />
+    <Compile Include="Mapper\IMapper.cs" />
     <Compile Include="Model\Artigo.cs" />
     <Compile Include="Model\Conferencia.cs" />
     <Compile Include="Model\Inscricao.cs" />
@@ -66,8 +67,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mapper\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
