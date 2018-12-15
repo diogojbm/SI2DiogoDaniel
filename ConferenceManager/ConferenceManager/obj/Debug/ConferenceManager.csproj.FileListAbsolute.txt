@@ -1,1 +1,6 @@
 C:\Users\siad\Desktop\ConferenceManager\ConferenceManager\bin\Debug\ConferenceManager.exe.config
+C:\Users\siad\Desktop\ConferenceManager\ConferenceManager\bin\Debug\ConferenceManager.exe
+C:\Users\siad\Desktop\ConferenceManager\ConferenceManager\bin\Debug\ConferenceManager.pdb
+C:\Users\siad\Desktop\ConferenceManager\ConferenceManager\obj\Debug\ConferenceManager.csprojResolveAssemblyReference.cache
+C:\Users\siad\Desktop\ConferenceManager\ConferenceManager\obj\Debug\ConferenceManager.exe
+C:\Users\siad\Desktop\ConferenceManager\ConferenceManager\obj\Debug\ConferenceManager.pdb
