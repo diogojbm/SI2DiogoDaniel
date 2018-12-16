@@ -51,16 +51,8 @@
     <Compile Include="Concrete\RevisaoRepository.cs" />
     <Compile Include="Concrete\SubmissaoRepository.cs" />
     <Compile Include="Concrete\UtilizadorRepository.cs" />
-    <Compile Include="DAL\IArtigoRepository.cs" />
-    <Compile Include="DAL\IConferenciaRepository.cs" />
     <Compile Include="DAL\IContext.cs" />
-    <Compile Include="DAL\IFicheiroRepository.cs" />
-    <Compile Include="DAL\IInscricaoRepository.cs" />
-    <Compile Include="DAL\IInstituicaoRepository.cs" />
     <Compile Include="DAL\IRepository.cs" />
-    <Compile Include="DAL\IRevisaoRepository.cs" />
-    <Compile Include="DAL\ISubmissaoRepository.cs" />
-    <Compile Include="DAL\IUtilizadorRepository.cs" />
     <Compile Include="Mapper\AbstractMapper.cs" />
     <Compile Include="Mapper\ISubmissaoMapper.cs" />
     <Compile Include="Mapper\IUtilizadorMapper.cs" />
