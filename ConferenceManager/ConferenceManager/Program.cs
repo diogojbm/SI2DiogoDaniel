@@ -16,7 +16,7 @@ namespace ConferenceManager
             {
                 using (SqlConnection con = new SqlConnection())
                 {
-                    con.ConnectionString = @"Data Source=VLABSIAD;Initial Catalog=ConferênciaAcadémica;Integrated Security=True";
+                    con.ConnectionString = @"Data Source=LAPTOP-VLEG347R;Initial Catalog=ConferênciaAcadémica;Integrated Security=True";
                     using (SqlCommand cmd = con.CreateCommand())
                     {
                         cmd.CommandText = "EXEC ConferênciaAcadémica.AtualizarConferenciaDataLimiteSubmissao '20181121', 'B', 2018";

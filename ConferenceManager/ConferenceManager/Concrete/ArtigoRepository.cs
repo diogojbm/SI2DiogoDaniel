@@ -1,12 +1,26 @@
-﻿using System;
+﻿using ConferenceManager.DAL;
+using ConferenceManager.Model;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConferenceManager.Concrete
 {
-    class ArtigoRepository
+    class ArtigoRepository : IArtigoRepository
     {
+        private IContext context;
+        public ArtigoRepository(IContext ctx)
+        {
+            context = ctx;
+        }
+
+        public IEnumerable<Artigo> Find(Func<Artigo, bool> criteria)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Artigo> FindAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

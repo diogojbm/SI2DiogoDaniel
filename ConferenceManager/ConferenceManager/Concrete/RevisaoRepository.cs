@@ -1,12 +1,26 @@
-﻿using System;
+﻿using ConferenceManager.DAL;
+using ConferenceManager.Model;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConferenceManager.Concrete
 {
-    class RevisaoRepository
+    class RevisaoRepository : IRevisaoRepository
     {
+        private IContext context;
+        public RevisaoRepository(IContext ctx)
+        {
+            context = ctx;
+        }
+
+        public IEnumerable<Revisao> Find(Func<Revisao, bool> criteria)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Revisao> FindAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -1,12 +1,26 @@
-﻿using System;
+﻿using ConferenceManager.DAL;
+using ConferenceManager.Model;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ConferenceManager.Concrete
 {
-    class ConferenciaRepository
+    class ConferenciaRepository : IConferenciaRepository
     {
+        private IContext context;
+        public ConferenciaRepository(IContext ctx)
+        {
+            context = ctx;
+        }
+
+        public IEnumerable<Conferencia> Find(Func<Conferencia, bool> criteria)
+        {
+            throw new NotImplementedException();
+        }
+
+        public IEnumerable<Conferencia> FindAll()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
