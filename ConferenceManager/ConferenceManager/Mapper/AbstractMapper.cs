@@ -5,24 +5,18 @@ using ConferenceManager.DAL.mapper.interfaces;
 
 namespace ConferenceManager.DAL.mapper
 {
-    #region ExtensionMethods
-    public static class CollectionExtensions
-    {
-        public static void AddRange(this IDataParameterCollection collection, IEnumerable<IDataParameter> newItems)
-        {
-            foreach (IDataParameter item in newItems)
-            {
-                collection.Add(item);
-            }
-        }
-    }
-    #endregion
-    abstract class AbstracMapper<T, Tid, TCol> : IMapper<T, Tid, TCol> where T : class, new() where TCol : IList<T>, IEnumerable<T>, new()
+    abstract class AbstractMapper<T, Tid, TCol> : IMapper<T, Tid, TCol> where T : class, new() where TCol : IList<T>, IEnumerable<T>, new()
     {
         protected IContext context;
+
+        public AbstractMapper(IContext ctx)
+        {
+            context = ctx;
+        }
+
         #region Abstract Methods
-        protected abstract T Map(IDataRecord record); //How to map entity
-        protected abstract T UpdateEntityID(IDbCommand cmd, T e); //Update the generated ID
+        protected abstract T Map(IDataRecord record);
+        protected abstract T UpdateEntityID(IDbCommand cmd, T e);
         protected abstract string SelectAllCommandText { get; }
         protected virtual CommandType SelectAllCommandType { get { return System.Data.CommandType.Text; } }
         protected virtual void SelectAllParameters(IDbCommand command) { }
@@ -42,7 +36,6 @@ namespace ConferenceManager.DAL.mapper
         protected abstract string InsertCommandText { get; }
         protected virtual CommandType InsertCommandType { get { return System.Data.CommandType.Text; } }
         protected abstract void InsertParameters(IDbCommand command, T e);
-
         #endregion
 
 
@@ -63,6 +56,7 @@ namespace ConferenceManager.DAL.mapper
             }
             return collection;
         }
+
 
         #region Helper Methods
         protected void EnsureContext()
@@ -93,12 +87,9 @@ namespace ConferenceManager.DAL.mapper
                 cmd.Parameters.Clear();
             }
         }
-
         #endregion
-        public AbstracMapper(IContext ctx)
-        {
-            context = ctx;
-        }
+
+
         #region IMapper implementation
         public virtual T Create(T entity)
         {
@@ -177,4 +168,17 @@ namespace ConferenceManager.DAL.mapper
         }
         #endregion
     }
+
+    #region ExtensionMethods
+    public static class CollectionExtensions
+    {
+        public static void AddRange(this IDataParameterCollection collection, IEnumerable<IDataParameter> newItems)
+        {
+            foreach (IDataParameter item in newItems)
+            {
+                collection.Add(item);
+            }
+        }
+    }
+    #endregion
 }
