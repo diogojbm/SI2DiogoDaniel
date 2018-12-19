@@ -8,3 +8,6 @@ C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager
 C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\obj\Debug\ConferenceManager.csproj.CoreCompileInputs.cache
 C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\obj\Debug\ConferenceManager.exe
 C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\obj\Debug\ConferenceManager.pdb
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\bin\Debug\ConferenceManager.exe.config
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\bin\Debug\ConferenceManager.exe
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\bin\Debug\ConferenceManager.pdb

@@ -185,5 +185,11 @@ namespace ConferenceManager.Concrete
 
         protected override void UpdateParameters(IDbCommand command, Conferencia c)
             => InsertParameters(command, c);
+
+        public void UpdateRevisionLimitDate()
+        {
+
+        }
+
     }
 }

@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AppService.cs" />
     <Compile Include="Concrete\Mappers\ArtigoMapper.cs" />
     <Compile Include="Concrete\Repositories\ArtigoRepository.cs" />
     <Compile Include="Concrete\Mappers\ConferenciaMapper.cs" />

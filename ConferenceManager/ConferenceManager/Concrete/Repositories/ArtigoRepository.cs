@@ -21,7 +21,7 @@ namespace ConferenceManager.Concrete
 
         public IEnumerable<Artigo> FindAll()
         {
-            return new ArtigosMapper(context).ReadAll();
+            return new ArtigoMapper(context).ReadAll();
         }
     }
 }

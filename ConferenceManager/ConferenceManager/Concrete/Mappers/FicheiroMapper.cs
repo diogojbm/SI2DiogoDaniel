@@ -68,14 +68,14 @@ namespace ConferenceManager.Concrete
             }
         }
 
-        /*
+        
         protected override string UpdateCommandText
         {
             get
             {
                 return "UPDATE Ficheiro SET responsavel = @responsavel WHERE nome = @nome AND idArtigo = @idArtigo AND nomeConferencia = @nomeConferencia AND anoConferencia = @anoConferencia";
             }
-        }*/
+        }
 
         protected override string DeleteCommandText
         {

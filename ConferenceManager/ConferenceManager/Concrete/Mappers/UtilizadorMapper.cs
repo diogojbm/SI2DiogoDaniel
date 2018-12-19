@@ -90,7 +90,7 @@ namespace ConferenceManager.Concrete
             return new UtilizadorProxy(u, context);
         }
 
-        /*public override Utilizador Create(Utilizador entity)
+        public override Utilizador Create(Utilizador entity)
         {
             return new UtilizadorProxy(base.Create(entity), context);
         }
@@ -98,7 +98,7 @@ namespace ConferenceManager.Concrete
         public override Utilizador Update(Utilizador entity)
         {
             return new UtilizadorProxy(base.Update(entity), context);
-        }*/
+        }
 
         protected override void SelectParameters(IDbCommand command, string k)
         {

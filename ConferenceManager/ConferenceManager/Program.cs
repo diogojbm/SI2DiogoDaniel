@@ -9,6 +9,7 @@ namespace ConferenceManager
 {
     class App
     {
+        private AppService service;
         private enum Function
         {
             Unknown = -1,
@@ -23,6 +24,7 @@ namespace ConferenceManager
         }
         private App()
         {
+            service = new AppService();
             mainOptions = new Dictionary<Function, MainMenuOptions>();
             mainOptions.Add(Function.UpdateConference, UpdateConference);
             mainOptions.Add(Function.AssignJobToUser, AssignJobToUser);
@@ -62,89 +64,16 @@ namespace ConferenceManager
 
             if (op == "1")
             {
-                Console.WriteLine();
-                Console.WriteLine("PREENCHA OS CAMPOS: <DATA REVISÃO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
-                string[] parameters = Console.ReadLine().Split(' ');
-
-                using (SqlConnection con = new SqlConnection())
-                {
-                    con.ConnectionString = @"Data Source=VLABSIAD;Initial Catalog=ConferênciaAcadémica;Integrated Security=True";
-                    con.Open();
-                    SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
-
-                    try
-                    {
-                        SqlCommand cmd = con.CreateCommand();
-                        cmd.Transaction = transaction;
-                        cmd.CommandText = $"EXEC ConferênciaAcadémica.AtualizarConferenciaDataLimiteRevisao '{parameters[0]}', '{parameters[1]}', '{parameters[2]}'";
-                        cmd.ExecuteNonQuery();
-                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTA CONFERÊNCIA FOI ATUALIZADA.");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        transaction.Rollback();
-                    }
-                }
-
+                service.UpdateRevisionLimitDate();
             }
+
             else if (op == "2")
             {
-                Console.WriteLine();
-                Console.WriteLine("PREENCHA OS CAMPOS: <DATA SUBMISSÃƒO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
-                string[] parameters = Console.ReadLine().Split(' ');
-
-                using (SqlConnection con = new SqlConnection())
-                {
-                    con.ConnectionString = @"Data Source=VLABSIAD;Initial Catalog=ConferênciaAcadémica;Integrated Security=True";
-                    con.Open();
-                    SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
-
-                    try
-                    {
-                        SqlCommand cmd = con.CreateCommand();
-                        cmd.Transaction = transaction;
-                        cmd.CommandText = $"EXEC ConferênciaAcadémica.AtualizarConferenciaDataLimiteSubmissao '{parameters[0]}', '{parameters[1]}', '{parameters[2]}'";
-                        cmd.ExecuteNonQuery();
-                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTA CONFERÊNCIA FOI ATUALIZADA.");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        transaction.Rollback();
-                    }
-                }
-
+                service.UpdateSubmissionLimitDate();
             }
             else if (op == "3")
             {
-                Console.WriteLine();
-                Console.WriteLine("PREENCHA OS CAMPOS: <EMAIL PRESIDENTE> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
-                string[] parameters = Console.ReadLine().Split(' ');
-
-                using (SqlConnection con = new SqlConnection())
-                {
-                    con.ConnectionString = @"Data Source=VLABSIAD;Initial Catalog=ConferênciaAcadémica;Integrated Security=True";
-                    con.Open();
-                    SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
-
-                    try
-                    {
-                        SqlCommand cmd = con.CreateCommand();
-                        cmd.Transaction = transaction;
-                        cmd.CommandText = $"EXEC ConferênciaAcadémica.AtualizarConferenciaPresidente '{parameters[0]}', '{parameters[1]}', '{parameters[2]}'";
-                        cmd.ExecuteNonQuery();
-                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTA CONFERÊNCIA FOI ATUALIZADA.");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        transaction.Rollback();
-                    }
-                }
+                service.UpdateConferencePresident();
             }
         }
         private void AssignJobToUser()
@@ -161,13 +90,14 @@ namespace ConferenceManager
 
             if (op == "1")
             {
+                service.AssignAuthorRole();
                 Console.WriteLine();
                 Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <EMAIL UTILIZADOR> <RESPONSÃVEL> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
                 string[] parameters = Console.ReadLine().Split(' ');
 
                 using (SqlConnection con = new SqlConnection())
                 {
-                    con.ConnectionString = @"Data Source=VLABSIAD;Initial Catalog=ConferênciaAcadémica;Integrated Security=True";
+                    con.ConnectionString = @"Data Source=LAPTOP-VLEG347R;Initial Catalog=ConferênciaAcadémica;Integrated Security=True";
                     con.Open();
                     SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
 
