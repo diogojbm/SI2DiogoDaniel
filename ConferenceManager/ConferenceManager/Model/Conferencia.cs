@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace ConferenceManager.Model
 {
@@ -10,5 +11,7 @@ namespace ConferenceManager.Model
         public DateTime DataLimiteRevisao { get; set; }
         public DateTime DataLimiteSubmissao { get; set; }
         public string EmailPresidente { get; set; }
+        public virtual List<Artigo> ArtigosAssociados { get; set; }
+        public virtual List<Utilizador> UtilizadoresAssociados { get; set; }
     }
 }

@@ -16,7 +16,7 @@ namespace ConferenceManager.DAL.mapper
 
         #region Abstract Methods
         protected abstract T Map(IDataRecord record);
-        protected abstract T UpdateEntityID(IDbCommand cmd, T e);
+        protected abstract T UpdateEntityKey(IDbCommand cmd, T e);
         protected abstract string SelectAllCommandText { get; }
         protected virtual CommandType SelectAllCommandType { get { return System.Data.CommandType.Text; } }
         protected virtual void SelectAllParameters(IDbCommand command) { }
@@ -64,6 +64,7 @@ namespace ConferenceManager.DAL.mapper
             if (context == null)
                 throw new InvalidOperationException("Data Context not set.");
         }
+
         protected IDataReader ExecuteReader(String commandText, List<IDataParameter> parameters)
         {
             using (IDbCommand cmd = context.createCommand())
@@ -100,7 +101,7 @@ namespace ConferenceManager.DAL.mapper
                 cmd.CommandType = InsertCommandType;
                 InsertParameters(cmd, entity);
                 cmd.ExecuteNonQuery();
-                T ent = UpdateEntityID(cmd, entity);
+                T ent = UpdateEntityKey(cmd, entity);
                 cmd.Parameters.Clear();
                 return ent;
             }

@@ -2,6 +2,7 @@
 using ConferenceManager.Model;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConferenceManager.Concrete
 {
@@ -15,12 +16,12 @@ namespace ConferenceManager.Concrete
 
         public IEnumerable<Revisao> Find(Func<Revisao, bool> criteria)
         {
-            throw new NotImplementedException();
+            return FindAll().Where(criteria);
         }
 
         public IEnumerable<Revisao> FindAll()
         {
-            throw new NotImplementedException();
+            return new RevisaoMapper(context).ReadAll();
         }
     }
 }

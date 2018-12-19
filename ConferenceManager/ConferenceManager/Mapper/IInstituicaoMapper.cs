@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace ConferenceManager.DAL.mapper.interfaces
 {
-    interface IInstituicaoMapper : IMapper<Instituicao, int?, List<Instituicao>>
+    interface IInstituicaoMapper : IMapper<Instituicao, string, List<Instituicao>>
     {
     }
 }
