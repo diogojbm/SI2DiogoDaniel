@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace ConferenceManager.Concrete
 {
@@ -129,5 +130,93 @@ namespace ConferenceManager.Concrete
         }
 
         protected override void UpdateParameters(IDbCommand command, Revisao r) => InsertParameters(command, r);
+
+        // ----------------------------- FUNCIONALIDADES ------------------------------
+
+        protected string NewReviserText
+        {
+            get
+            {
+                return "ConferênciaAcadémica.AtribuirPapelRevisor";
+            }
+
+        }
+
+        protected void NewReviserParameters(SqlCommand cmd, Revisao r)
+        {
+            cmd.Parameters.Add(new SqlParameter("@idArtigo", r.IDArtigo));
+            cmd.Parameters.Add(new SqlParameter("@email", r.EmailRevisor));
+            cmd.Parameters.Add(new SqlParameter("@nomeConferencia", r.NomeConferencia));
+            cmd.Parameters.Add(new SqlParameter("@anoConferencia", r.AnoConferencia));
+        }
+
+        public void ExecNewReviser(Context ctx, Revisao r)
+        {
+            using (TransactionScope tran = new TransactionScope())
+            {
+                try
+                {
+                    using (SqlCommand cmd = ctx.createCommand())
+                    {
+                        //SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+                        cmd.CommandText = NewReviserText;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        NewReviserParameters(cmd, r);
+                        cmd.ExecuteNonQuery();
+                        cmd.Parameters.Clear();
+                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTA CONFERÊNCIA FOI ATUALIZADA.");
+                        tran.Complete();
+                    }
+                }
+                catch (SqlException exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+            }
+
+        }
+
+        protected string AssignReviserText
+        {
+            get
+            {
+                return "ConferênciaAcadémica.AtribuirRevisor";
+            }
+
+        }
+
+        protected void AssignReviserParameters(SqlCommand cmd, Revisao r)
+        {
+            cmd.Parameters.Add(new SqlParameter("@emailRevisor", r.EmailRevisor));
+            cmd.Parameters.Add(new SqlParameter("@idArtigo", r.IDArtigo));
+            cmd.Parameters.Add(new SqlParameter("@nomeConferencia", r.NomeConferencia));
+            cmd.Parameters.Add(new SqlParameter("@anoConferencia", r.AnoConferencia));
+        }
+
+        public void ExecAssignReviser(Context ctx, Revisao r)
+        {
+            using (TransactionScope tran = new TransactionScope())
+            {
+                try
+                {
+                    using (SqlCommand cmd = ctx.createCommand())
+                    {
+                        //SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.RepeatableRead);
+                        cmd.CommandText = AssignReviserText;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        AssignReviserParameters(cmd, r);
+                        cmd.ExecuteNonQuery();
+                        cmd.Parameters.Clear();
+                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTA CONFERÊNCIA FOI ATUALIZADA.");
+                        tran.Complete();
+                    }
+                }
+                catch (SqlException exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+            }
+
+        }
     }
 }

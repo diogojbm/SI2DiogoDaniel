@@ -80,7 +80,6 @@ namespace ConferenceManager
                 Console.WriteLine("ERRO NA SELEÇÃO DA OPERAÇÃO. POR FAVOR TENTE NOVAMENTE.");
             }
         }
-
         private void AssignJobToUser()
         {
             Console.WriteLine("ATRIBUIR PAPEL A UM UTILIZADOR REGISTADO");
@@ -96,183 +95,32 @@ namespace ConferenceManager
             if (op == "1")
             {
                 service.AssignAuthorRole();
-                Console.WriteLine();
-                Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <EMAIL UTILIZADOR> <RESPONSÁVEL> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
-                string[] parameters = Console.ReadLine().Split(' ');
-
-                using (SqlConnection con = new SqlConnection())
-                {
-                    con.ConnectionString = @"Data Source=LAPTOP-VLEG347R;Initial Catalog=ConferênciaAcadémica;Integrated Security=True";
-                    con.Open();
-                    SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
-
-                    try
-                    {
-                        SqlCommand cmd = con.CreateCommand();
-                        cmd.Transaction = transaction;
-                        cmd.CommandText = $"EXEC ConferênciaAcadémica.AtribuirPapelAutor '{parameters[0]}', '{parameters[1]}', '{parameters[2]}', '{parameters[3]}', '{parameters[4]}'";
-                        cmd.ExecuteNonQuery();
-                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTE UTILIZADOR É AGORA UM DOS AUTORES DO ARTIGO.");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        transaction.Rollback();
-                    }
-                }
-
             }
             else if (op == "2")
             {
-                Console.WriteLine();
-                Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <EMAIL UTILIZADOR> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
-                string[] parameters = Console.ReadLine().Split(' ');
-
-                using (SqlConnection con = new SqlConnection())
-                {
-                    con.ConnectionString = @"Data Source=VLABSIAD;Initial Catalog=ConferênciaAcadémica;Integrated Security=True";
-                    con.Open();
-                    SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
-
-                    try
-                    {
-                        SqlCommand cmd = con.CreateCommand();
-                        cmd.Transaction = transaction;
-                        cmd.CommandText = $"EXEC ConferênciaAcadémica.AtribuirPapelRevisor '{parameters[0]}', '{parameters[1]}', '{parameters[2]}', '{parameters[3]}'";
-                        cmd.ExecuteNonQuery();
-                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTE UTILIZADOR É AGORA REVISOR DO ARTIGO.");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        transaction.Rollback();
-                    }
-                }
-
+                service.AssignReviserRole();
             }
             else if (op == "3")
             {
-                Console.WriteLine();
-                Console.WriteLine("PREENCHA OS CAMPOS: <EMAIL UTILIZADOR> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
-                string[] parameters = Console.ReadLine().Split(' ');
-
-                using (SqlConnection con = new SqlConnection())
-                {
-                    con.ConnectionString = @"Data Source=VLABSIAD;Initial Catalog=ConferênciaAcadémica;Integrated Security=True";
-                    con.Open();
-                    SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
-
-                    try
-                    {
-                        SqlCommand cmd = con.CreateCommand();
-                        cmd.Transaction = transaction;
-                        cmd.CommandText = $"EXEC ConferênciaAcadémica.AtribuirPapelPresidente '{parameters[0]}', '{parameters[1]}', '{parameters[2]}'";
-                        cmd.ExecuteNonQuery();
-                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTE UTILIZADOR É AGORA PRESIDENTE DA CONFERÊNCIA.");
-                        transaction.Commit();
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex.Message);
-                        transaction.Rollback();
-                    }
-                }
-            }
-            else{
-                Console.WriteLine("ERRO NA SELEÇÃO DA OPERAÇÃO. POR FAVOR TENTE NOVAMENTE.");
+                service.AssignPresident();
             }
         }
         private void ListCompatibleReviewers()
         {
             Console.WriteLine("LISTAR REVISORES COMPATÍVEIS COM REVISÃO");
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
-            string[] parameters = Console.ReadLine().Split(' ');
-
-            using (SqlConnection con = new SqlConnection())
-            {
-                con.ConnectionString = @"Data Source=VLABSIAD;Initial Catalog=ConferênciaAcadémica;Integrated Security=True";
-                con.Open();
-                SqlTransaction transaction = con.BeginTransaction();    // default Isolation Level
-
-                try
-                {
-                    SqlCommand cmd = con.CreateCommand();
-                    cmd.Transaction = transaction;
-                    cmd.CommandText = $"EXEC ConferênciaAcadémica.ListarRevisores '{parameters[0]}', '{parameters[1]}', '{parameters[2]}'";
-                    SqlDataReader dr = cmd.ExecuteReader();
-                    Console.WriteLine("LISTA DE REVISORES COMPATÍVEIS:");
-                    while (dr.Read()) { Console.WriteLine(dr[0].ToString()); }
-                    dr.Close();
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    transaction.Rollback();
-                }
-            }
+            service.ListRevisers();
         }
         private void AssignReviewerToRevision()
         {
             Console.WriteLine("ATRIBUIR REVISOR A UMA REVISÃO");
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <EMAIL REVISOR> <ID ARTIGO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
-            string[] parameters = Console.ReadLine().Split(' ');
-
-            using (SqlConnection con = new SqlConnection())
-            {
-                con.ConnectionString = @"Data Source=VLABSIAD;Initial Catalog=ConferênciaAcadémica;Integrated Security=True";
-                con.Open();
-                SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.RepeatableRead);
-
-                try
-                {
-                    SqlCommand cmd = con.CreateCommand();
-                    cmd.Transaction = transaction;
-                    cmd.CommandText = $"EXEC ConferênciaAcadémica.AtribuirRevisor '{parameters[0]}', '{parameters[1]}', '{parameters[2]}', '{parameters[3]}'";
-                    cmd.ExecuteNonQuery();
-                    Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTE REVISOR Ã‰ AGORA UM DOS REVISORES DO ARTIGO.");
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    transaction.Rollback();
-                }
-            }
+            service.AssignReviser();
         }
         private void RegisterRevision()
         {
             Console.WriteLine("REGISTAR REVISÃO");
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <DATA REVISÃO> <NOTA MÍNIMA> <NOTA> <TEXTO> <ID ARTIGO> <EMAIL REVISOR> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
-            string[] parameters = Console.ReadLine().Split(' ');
-
-            using (SqlConnection con = new SqlConnection())
-            {
-                con.ConnectionString = @"Data Source=VLABSIAD;Initial Catalog=ConferênciaAcadémica;Integrated Security=True";
-                con.Open();
-                SqlTransaction transaction = con.BeginTransaction();
-
-                try
-                {
-                    SqlCommand cmd = con.CreateCommand();
-                    cmd.Transaction = transaction;
-                    cmd.CommandText = $"EXEC ConferênciaAcadémica.RegistarRevisao '{parameters[0]}', '{parameters[1]}', '{parameters[2]}', '{parameters[3]}', '{parameters[4]}', '{parameters[5]}', '{parameters[6]}', '{parameters[7]}'";
-                    cmd.ExecuteNonQuery();
-                    Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! REVISÃO REGISTADA.");
-                    transaction.Commit();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                    transaction.Rollback();
-                }
-            }
+            service.RegisterRevision();
         }
+
         private void AcceptedSubmissionsPercentage()
         {
             Console.WriteLine("PERCENTAGEM DE SUBMISSÕES ACEITES");

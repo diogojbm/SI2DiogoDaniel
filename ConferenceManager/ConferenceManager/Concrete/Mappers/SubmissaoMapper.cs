@@ -9,6 +9,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace ConferenceManager.Concrete
 {
@@ -122,5 +123,52 @@ namespace ConferenceManager.Concrete
         }
 
         protected override void UpdateParameters(IDbCommand command, Submissao s) => InsertParameters(command, s);
+
+        // ----------------------------- FUNCIONALIDADES ------------------------------
+
+        protected string NewAuthorText
+        {
+            get
+            {
+                return "ConferênciaAcadémica.AtribuirPapelAutor";
+            }
+
+        }
+
+
+        protected void NewAuthorParameters(SqlCommand cmd, Submissao s)
+        {
+            cmd.Parameters.Add(new SqlParameter("@idArtigo", s.IDArtigo));
+            cmd.Parameters.Add(new SqlParameter("@email", s.EmailAutor));
+            cmd.Parameters.Add(new SqlParameter("@responsavel", s.Responsavel));
+            cmd.Parameters.Add(new SqlParameter("@nomeConferencia", s.NomeConferencia));
+            cmd.Parameters.Add(new SqlParameter("@anoConferencia", s.AnoConferencia));
+        }
+
+        public void ExecNewAuthor(Context ctx, Submissao s)
+        {
+            using (TransactionScope tran = new TransactionScope())
+            {
+                try
+                {
+                    using (SqlCommand cmd = ctx.createCommand())
+                    {
+                        //SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+                        cmd.CommandText = NewAuthorText;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        NewAuthorParameters(cmd, s);
+                        cmd.ExecuteNonQuery();
+                        cmd.Parameters.Clear();
+                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTA CONFERÊNCIA FOI ATUALIZADA.");
+                        tran.Complete();
+                    }
+                }
+                catch (SqlException exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+            }
+
+        }
     }
 }

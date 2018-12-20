@@ -122,6 +122,24 @@ namespace ConferenceManager.Concrete
 
         }
 
+        protected string UpdateSubmissionLimitDateText
+        {
+            get
+            {
+                return "ConferênciaAcadémica.AtualizarConferenciaDataLimiteSubmissao";
+            }
+
+        }
+
+        protected string UpdatePresidentText
+        {
+            get
+            {
+                return "ConferênciaAcadémica.AtualizarConferenciaPresidente";
+            }
+
+        }
+
         protected override Conferencia Map(IDataRecord record)
         {
             Conferencia c = new Conferencia();
@@ -174,6 +192,20 @@ namespace ConferenceManager.Concrete
             cmd.Parameters.Add(new SqlParameter("@anoConferencia", c.AnoRealizacao));
         }
 
+        protected void UpdateSubmissionLimitDateParameters(SqlCommand cmd, Conferencia c)
+        {
+            cmd.Parameters.Add(new SqlParameter("@dataSubmissao", c.DataLimiteSubmissao));
+            cmd.Parameters.Add(new SqlParameter("@nomeConferencia", c.Nome));
+            cmd.Parameters.Add(new SqlParameter("@anoConferencia", c.AnoRealizacao));
+        }
+
+        protected void UpdatePresidentParameters(SqlCommand cmd, Conferencia c)
+        {
+            cmd.Parameters.Add(new SqlParameter("@emailPres", c.EmailPresidente));
+            cmd.Parameters.Add(new SqlParameter("@nomeConferencia", c.Nome));
+            cmd.Parameters.Add(new SqlParameter("@anoConferencia", c.AnoRealizacao));
+        }
+
         protected override void DeleteParameters(IDbCommand command, Conferencia c) =>
             SelectParameters(command, new Tuple<string, int>(c.Nome, c.AnoRealizacao));
 
@@ -202,6 +234,100 @@ namespace ConferenceManager.Concrete
                         cmd.CommandText = UpdateRevisionLimitDateText;
                         cmd.CommandType = CommandType.StoredProcedure;
                         UpdateRevisionLimitDateParameters(cmd, c);
+                        cmd.ExecuteNonQuery();
+                        cmd.Parameters.Clear();
+                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTA CONFERÊNCIA FOI ATUALIZADA.");
+                        tran.Complete();
+                    }
+                }
+                catch (SqlException exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+            }
+
+        }
+
+        public void ExecUpdateSubmissionLimitDate(Context ctx, Conferencia c)
+        {
+            using (TransactionScope tran = new TransactionScope())
+            {
+                try
+                {
+                    using (SqlCommand cmd = ctx.createCommand())
+                    {
+                        //SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+                        cmd.CommandText = UpdateSubmissionLimitDateText;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        UpdateSubmissionLimitDateParameters(cmd, c);
+                        cmd.ExecuteNonQuery();
+                        cmd.Parameters.Clear();
+                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTA CONFERÊNCIA FOI ATUALIZADA.");
+                        tran.Complete();
+                    }
+                }
+                catch (SqlException exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+            }
+
+        }
+
+        public void ExecUpdatePresident(Context ctx, Conferencia c)
+        {
+            using (TransactionScope tran = new TransactionScope())
+            {
+                try
+                {
+                    using (SqlCommand cmd = ctx.createCommand())
+                    {
+                        //SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+                        cmd.CommandText = UpdatePresidentText;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        UpdatePresidentParameters(cmd, c);
+                        cmd.ExecuteNonQuery();
+                        cmd.Parameters.Clear();
+                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTA CONFERÊNCIA FOI ATUALIZADA.");
+                        tran.Complete();
+                    }
+                }
+                catch (SqlException exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+            }
+
+        }
+
+        protected string AssignPresidentText
+        {
+            get
+            {
+                return "ConferênciaAcadémica.AtribuirPapelPresidente";
+            }
+
+        }
+
+        protected void AssignPresidentParameters(SqlCommand cmd, Conferencia c)
+        {
+            cmd.Parameters.Add(new SqlParameter("@email", c.EmailPresidente));
+            cmd.Parameters.Add(new SqlParameter("@nomeConferencia", c.Nome));
+            cmd.Parameters.Add(new SqlParameter("@anoConferencia", c.AnoRealizacao));
+        }
+
+        public void ExecAssignPresident(Context ctx, Conferencia c)
+        {
+            using (TransactionScope tran = new TransactionScope())
+            {
+                try
+                {
+                    using (SqlCommand cmd = ctx.createCommand())
+                    {
+                        //SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+                        cmd.CommandText = AssignPresidentText;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        AssignPresidentParameters(cmd, c);
                         cmd.ExecuteNonQuery();
                         cmd.Parameters.Clear();
                         Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTA CONFERÊNCIA FOI ATUALIZADA.");
