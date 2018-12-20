@@ -45,6 +45,7 @@ namespace ConferenceManager.Concrete
             SqlCommand cmd = con.CreateCommand();
             return cmd;
         }
+
         public void Dispose()
         {
             if (con != null)

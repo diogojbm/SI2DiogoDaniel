@@ -75,7 +75,12 @@ namespace ConferenceManager
             {
                 service.UpdateConferencePresident();
             }
+            else
+            {
+                Console.WriteLine("ERRO NA SELEÇÃO DA OPERAÇÃO. POR FAVOR TENTE NOVAMENTE.");
+            }
         }
+
         private void AssignJobToUser()
         {
             Console.WriteLine("ATRIBUIR PAPEL A UM UTILIZADOR REGISTADO");
@@ -92,7 +97,7 @@ namespace ConferenceManager
             {
                 service.AssignAuthorRole();
                 Console.WriteLine();
-                Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <EMAIL UTILIZADOR> <RESPONSÃVEL> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+                Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <EMAIL UTILIZADOR> <RESPONSÁVEL> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
                 string[] parameters = Console.ReadLine().Split(' ');
 
                 using (SqlConnection con = new SqlConnection())
@@ -107,7 +112,7 @@ namespace ConferenceManager
                         cmd.Transaction = transaction;
                         cmd.CommandText = $"EXEC ConferênciaAcadémica.AtribuirPapelAutor '{parameters[0]}', '{parameters[1]}', '{parameters[2]}', '{parameters[3]}', '{parameters[4]}'";
                         cmd.ExecuteNonQuery();
-                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTE UTILIZADOR Ã‰ AGORA UM DOS AUTORES DO ARTIGO.");
+                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTE UTILIZADOR É AGORA UM DOS AUTORES DO ARTIGO.");
                         transaction.Commit();
                     }
                     catch (Exception ex)
@@ -136,7 +141,7 @@ namespace ConferenceManager
                         cmd.Transaction = transaction;
                         cmd.CommandText = $"EXEC ConferênciaAcadémica.AtribuirPapelRevisor '{parameters[0]}', '{parameters[1]}', '{parameters[2]}', '{parameters[3]}'";
                         cmd.ExecuteNonQuery();
-                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTE UTILIZADOR Ã‰ AGORA REVISOR DO ARTIGO.");
+                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTE UTILIZADOR É AGORA REVISOR DO ARTIGO.");
                         transaction.Commit();
                     }
                     catch (Exception ex)
@@ -165,7 +170,7 @@ namespace ConferenceManager
                         cmd.Transaction = transaction;
                         cmd.CommandText = $"EXEC ConferênciaAcadémica.AtribuirPapelPresidente '{parameters[0]}', '{parameters[1]}', '{parameters[2]}'";
                         cmd.ExecuteNonQuery();
-                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTE UTILIZADOR Ã‰ AGORA PRESIDENTE DA CONFERÊNCIA.");
+                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTE UTILIZADOR É AGORA PRESIDENTE DA CONFERÊNCIA.");
                         transaction.Commit();
                     }
                     catch (Exception ex)
@@ -174,6 +179,9 @@ namespace ConferenceManager
                         transaction.Rollback();
                     }
                 }
+            }
+            else{
+                Console.WriteLine("ERRO NA SELEÇÃO DA OPERAÇÃO. POR FAVOR TENTE NOVAMENTE.");
             }
         }
         private void ListCompatibleReviewers()

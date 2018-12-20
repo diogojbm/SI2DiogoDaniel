@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace ConferenceManager.Concrete
 {
@@ -77,8 +78,8 @@ namespace ConferenceManager.Concrete
         {
             get
             {
-                return String.Format("{0} WHERE nomeConferencia = @nomeConferencia" +
-                       "AND anoConferencia = @anoConferencia AND emailUtilizador = @emailUtilizador", SelectAllCommandText); ;
+                return String.Format("{0} WHERE nome = @nome " +
+                       "AND anoRealizacao = @anoRealizacao", SelectAllCommandText); ;
             }
         }
 
@@ -96,10 +97,10 @@ namespace ConferenceManager.Concrete
             get
             {
                 return "UPDATE Conferencia SET acronimo = @acronimo " +
-                    "AND dataLimiteRevisao = @dataLimiteRevisao" +
-                    "AND dataLimiteSubmissao = @dataLimiteSubmissao" +
-                    "AND emailPresidente = @emailPresidente WHERE nomeConferencia = @nomeConferencia " +
-                    "AND anoConferencia = @anoConferencia";
+                    "AND dataLimiteRevisao = @dataLimiteRevisao " +
+                    "AND dataLimiteSubmissao = @dataLimiteSubmissao " +
+                    "AND emailPresidente = @emailPresidente WHERE nome = @nome " +
+                    "AND anoRealizacao = @anoRealizacao";
             }
         }
 
@@ -107,11 +108,19 @@ namespace ConferenceManager.Concrete
         {
             get
             {
-                return "DELETE FROM Conferencia WHERE nomeConferencia = @nomeConferencia" +
-                       "AND anoConferencia = @anoConferencia";
+                return "DELETE FROM Conferencia WHERE nome = @nome " +
+                       "AND anoRealizacao = @anoRealizacao";
             }
         }
 
+        protected string UpdateRevisionLimitDateText
+        {
+            get
+            {
+                return "ConferênciaAcadémica.AtualizarConferenciaDataLimiteRevisao";
+            }
+
+        }
 
         protected override Conferencia Map(IDataRecord record)
         {
@@ -119,8 +128,8 @@ namespace ConferenceManager.Concrete
             c.Nome = record.GetString(0);
             c.AnoRealizacao = record.GetInt32(1);
             c.Acronimo = record.GetString(2);
-            c.DataLimiteRevisao = record.GetDateTime(3);
-            c.DataLimiteSubmissao = record.GetDateTime(4);
+            c.DataLimiteRevisao = record.GetDateTime(3).ToString("yyyyMMdd");
+            c.DataLimiteSubmissao = record.GetDateTime(4).ToString("yyyyMMdd");
             c.EmailPresidente = record.GetString(5);
             return new ConferenciaProxy(c, context);
         }
@@ -137,21 +146,12 @@ namespace ConferenceManager.Concrete
 
         protected override void SelectParameters(IDbCommand command, Tuple<string, int> k)
         {
-            SqlParameter nomeSelectDelete = new SqlParameter("@nome", k.Item1);
-            SqlParameter anoRealizacaoSelectDelete = new SqlParameter("@anoRealizacao", k.Item2);
-            command.Parameters.Add(nomeSelectDelete);
-            command.Parameters.Add(anoRealizacaoSelectDelete);
+            command.Parameters.Add(new SqlParameter("@nome", k.Item1));
+            command.Parameters.Add(new SqlParameter("@anoRealizacao", k.Item2));
         }
 
         protected override void InsertParameters(IDbCommand command, Conferencia c)
         {
-            SqlParameter nomeInsertUpdate = new SqlParameter("@nome", c.Nome);
-            SqlParameter anoRealizacaoInsertUpdate = new SqlParameter("@anoRealizacao", c.AnoRealizacao);
-            SqlParameter acronimoInsertUpdate = new SqlParameter("@acronimo", c.AnoRealizacao);
-            SqlParameter dataLimiteRevisaoInsertUpdate = new SqlParameter("@dataLimiteRevisao", c.DataLimiteRevisao);
-            SqlParameter dataLimiteSubmissaoInsertUpdate = new SqlParameter("@dataLimiteSubmissao", c.DataLimiteSubmissao);
-            SqlParameter emailPresidenteInsertUpdate = new SqlParameter("@emailPresidente", c.EmailPresidente);
-
             /*p1.Direction = ParameterDirection.InputOutput;
             if (c.Email != null)
                 p1.Value = c.Email;
@@ -159,15 +159,19 @@ namespace ConferenceManager.Concrete
                 p1.Value = DBNull.Value;
             */
 
-            command.Parameters.Add(nomeInsertUpdate);
-            command.Parameters.Add(anoRealizacaoInsertUpdate);
-            command.Parameters.Add(acronimoInsertUpdate);
-            command.Parameters.Add(dataLimiteRevisaoInsertUpdate);
-            command.Parameters.Add(dataLimiteSubmissaoInsertUpdate);
-            command.Parameters.Add(emailPresidenteInsertUpdate);
+            command.Parameters.Add(new SqlParameter("@nome", c.Nome));
+            command.Parameters.Add(new SqlParameter("@anoRealizacao", c.AnoRealizacao));
+            command.Parameters.Add(new SqlParameter("@acronimo", c.AnoRealizacao));
+            command.Parameters.Add(new SqlParameter("@dataLimiteRevisao", c.DataLimiteRevisao));
+            command.Parameters.Add(new SqlParameter("@dataLimiteSubmissao", c.DataLimiteSubmissao));
+            command.Parameters.Add(new SqlParameter("@emailPresidente", c.EmailPresidente));
+        }
 
-
-
+        protected void UpdateRevisionLimitDateParameters(SqlCommand cmd, Conferencia c)
+        {
+            cmd.Parameters.Add(new SqlParameter("@dataRevisao", c.DataLimiteRevisao));
+            cmd.Parameters.Add(new SqlParameter("@nomeConferencia", c.Nome));
+            cmd.Parameters.Add(new SqlParameter("@anoConferencia", c.AnoRealizacao));
         }
 
         protected override void DeleteParameters(IDbCommand command, Conferencia c) =>
@@ -186,10 +190,30 @@ namespace ConferenceManager.Concrete
         protected override void UpdateParameters(IDbCommand command, Conferencia c)
             => InsertParameters(command, c);
 
-        public void UpdateRevisionLimitDate()
+        public void ExecUpdateRevisionLimitDate(Context ctx, Conferencia c)
         {
+            using (TransactionScope tran = new TransactionScope())
+            {
+                try
+                {
+                    using (SqlCommand cmd = ctx.createCommand())
+                    {
+                        //SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+                        cmd.CommandText = UpdateRevisionLimitDateText;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        UpdateRevisionLimitDateParameters(cmd, c);
+                        cmd.ExecuteNonQuery();
+                        cmd.Parameters.Clear();
+                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTA CONFERÊNCIA FOI ATUALIZADA.");
+                        tran.Complete();
+                    }
+                }
+                catch (SqlException exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+            }
 
         }
-
     }
 }
