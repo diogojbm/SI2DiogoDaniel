@@ -11,7 +11,7 @@ namespace ConferenceManager
         private SubmissaoMapper sm;
         private RevisaoMapper rm;
         private ArtigoMapper am;
-        private Context ctx = new Context(@"Data Source=VLABSIAD;Initial Catalog=ConferênciaAcadémica;Integrated Security=True");
+        private Context ctx = new Context(@"Data Source=LAPTOP-VLEG347R;Initial Catalog=ConferênciaAcadémica;Integrated Security=True");
         public AppService()
         {
             cm = new ConferenciaMapper(ctx);
@@ -311,7 +311,37 @@ namespace ConferenceManager
         }
 
         //TO-DO:
-        public void CalcAcceptedSubmissions() { }
+        public void CalcAcceptedSubmissionsRatio() {
+            ctx.Open();
+
+            Console.WriteLine();
+            Console.WriteLine("PREENCHA OS CAMPOS: <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            string[] parameters = Console.ReadLine().Split(' ');
+
+            Conferencia c = new Conferencia();
+            string ratio = null;
+            if (parameters.Length == 2)
+            {
+                c.Nome = parameters[0];
+                c.AnoRealizacao = Int32.Parse(parameters[1]);
+
+                ratio = cm.ExecCalcAcceptedSubmissionsRatio(ctx, c);
+                // Where are we going to use repository and where are we going to use proxy to do lazy load and to map something?
+                //a = rm.Read(new Tuple<int, string, string, int>(a.IDArtigo, a.EmailRevisor, a.NomeConferencia, a.AnoConferencia));
+
+                if (ratio != null)
+                {
+                    Console.WriteLine("PERCENTAGEM DE SUBMISSÕES ACEITES: " + ratio + "%");
+                    Console.WriteLine();
+                    Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                }
+                else Console.WriteLine("NÃO FOI POSSÍVEL CALCULAR A PERCENTAGEM. PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            }
+
+            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+
+            ctx.Dispose();
+        }
 
         //TO-DO
         public void ChangeSubmissionState() { }

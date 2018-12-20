@@ -113,33 +113,6 @@ namespace ConferenceManager.Concrete
             }
         }
 
-        protected string UpdateRevisionLimitDateText
-        {
-            get
-            {
-                return "ConferênciaAcadémica.AtualizarConferenciaDataLimiteRevisao";
-            }
-
-        }
-
-        protected string UpdateSubmissionLimitDateText
-        {
-            get
-            {
-                return "ConferênciaAcadémica.AtualizarConferenciaDataLimiteSubmissao";
-            }
-
-        }
-
-        protected string UpdatePresidentText
-        {
-            get
-            {
-                return "ConferênciaAcadémica.AtualizarConferenciaPresidente";
-            }
-
-        }
-
         protected override Conferencia Map(IDataRecord record)
         {
             Conferencia c = new Conferencia();
@@ -185,27 +158,6 @@ namespace ConferenceManager.Concrete
             command.Parameters.Add(new SqlParameter("@emailPresidente", c.EmailPresidente));
         }
 
-        protected void UpdateRevisionLimitDateParameters(SqlCommand cmd, Conferencia c)
-        {
-            cmd.Parameters.Add(new SqlParameter("@dataRevisao", c.DataLimiteRevisao));
-            cmd.Parameters.Add(new SqlParameter("@nomeConferencia", c.Nome));
-            cmd.Parameters.Add(new SqlParameter("@anoConferencia", c.AnoRealizacao));
-        }
-
-        protected void UpdateSubmissionLimitDateParameters(SqlCommand cmd, Conferencia c)
-        {
-            cmd.Parameters.Add(new SqlParameter("@dataSubmissao", c.DataLimiteSubmissao));
-            cmd.Parameters.Add(new SqlParameter("@nomeConferencia", c.Nome));
-            cmd.Parameters.Add(new SqlParameter("@anoConferencia", c.AnoRealizacao));
-        }
-
-        protected void UpdatePresidentParameters(SqlCommand cmd, Conferencia c)
-        {
-            cmd.Parameters.Add(new SqlParameter("@emailPres", c.EmailPresidente));
-            cmd.Parameters.Add(new SqlParameter("@nomeConferencia", c.Nome));
-            cmd.Parameters.Add(new SqlParameter("@anoConferencia", c.AnoRealizacao));
-        }
-
         protected override void DeleteParameters(IDbCommand command, Conferencia c) =>
             SelectParameters(command, new Tuple<string, int>(c.Nome, c.AnoRealizacao));
 
@@ -221,6 +173,25 @@ namespace ConferenceManager.Concrete
 
         protected override void UpdateParameters(IDbCommand command, Conferencia c)
             => InsertParameters(command, c);
+
+
+        //------------------------------ FUNCIONALIDADES ----------------------------------
+
+        protected string UpdateRevisionLimitDateText
+        {
+            get
+            {
+                return "ConferênciaAcadémica.AtualizarConferenciaDataLimiteRevisao";
+            }
+
+        }
+
+        protected void UpdateRevisionLimitDateParameters(SqlCommand cmd, Conferencia c)
+        {
+            cmd.Parameters.Add(new SqlParameter("@dataRevisao", c.DataLimiteRevisao));
+            cmd.Parameters.Add(new SqlParameter("@nomeConferencia", c.Nome));
+            cmd.Parameters.Add(new SqlParameter("@anoConferencia", c.AnoRealizacao));
+        }
 
         public void ExecUpdateRevisionLimitDate(Context ctx, Conferencia c)
         {
@@ -245,7 +216,21 @@ namespace ConferenceManager.Concrete
                     Console.WriteLine(exception.Message);
                 }
             }
+        }
 
+        protected string UpdateSubmissionLimitDateText
+        {
+            get
+            {
+                return "ConferênciaAcadémica.AtualizarConferenciaDataLimiteSubmissao";
+            }
+        }
+
+        protected void UpdateSubmissionLimitDateParameters(SqlCommand cmd, Conferencia c)
+        {
+            cmd.Parameters.Add(new SqlParameter("@dataSubmissao", c.DataLimiteSubmissao));
+            cmd.Parameters.Add(new SqlParameter("@nomeConferencia", c.Nome));
+            cmd.Parameters.Add(new SqlParameter("@anoConferencia", c.AnoRealizacao));
         }
 
         public void ExecUpdateSubmissionLimitDate(Context ctx, Conferencia c)
@@ -271,7 +256,21 @@ namespace ConferenceManager.Concrete
                     Console.WriteLine(exception.Message);
                 }
             }
+        }
 
+        protected string UpdatePresidentText
+        {
+            get
+            {
+                return "ConferênciaAcadémica.AtualizarConferenciaPresidente";
+            }
+        }
+
+        protected void UpdatePresidentParameters(SqlCommand cmd, Conferencia c)
+        {
+            cmd.Parameters.Add(new SqlParameter("@emailPres", c.EmailPresidente));
+            cmd.Parameters.Add(new SqlParameter("@nomeConferencia", c.Nome));
+            cmd.Parameters.Add(new SqlParameter("@anoConferencia", c.AnoRealizacao));
         }
 
         public void ExecUpdatePresident(Context ctx, Conferencia c)
@@ -297,7 +296,6 @@ namespace ConferenceManager.Concrete
                     Console.WriteLine(exception.Message);
                 }
             }
-
         }
 
         protected string AssignPresidentText
@@ -306,7 +304,6 @@ namespace ConferenceManager.Concrete
             {
                 return "ConferênciaAcadémica.AtribuirPapelPresidente";
             }
-
         }
 
         protected void AssignPresidentParameters(SqlCommand cmd, Conferencia c)
@@ -339,7 +336,51 @@ namespace ConferenceManager.Concrete
                     Console.WriteLine(exception.Message);
                 }
             }
+        }
 
+        protected string CalcAcceptedSubmissionsRatioText
+        {
+            get
+            {
+                return "ConferênciaAcadémica.PercentagemSubmissoesAceites";
+            }
+        }
+
+        protected void CalcAcceptedSubmissionsRatioParameters(SqlCommand cmd, Conferencia c)
+        {
+            cmd.Parameters.Add(new SqlParameter("@nomeConferencia", c.Nome));
+            cmd.Parameters.Add(new SqlParameter("@anoConferencia", c.AnoRealizacao));
+            cmd.Parameters.Add("@ReturnValue", SqlDbType.Decimal).Direction = ParameterDirection.ReturnValue;
+
+        }
+
+        public string ExecCalcAcceptedSubmissionsRatio(Context ctx, Conferencia c)
+        {
+            using(TransactionScope tran = new TransactionScope())
+            {
+                try
+                {
+                    using (SqlCommand cmd = ctx.createCommand())
+                    {
+                        //SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.ReadUncommitted);
+                        cmd.CommandText = CalcAcceptedSubmissionsRatioText;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        CalcAcceptedSubmissionsRatioParameters(cmd, c);
+                        cmd.ExecuteNonQuery();
+                        Object ratio = cmd.Parameters["@ReturnValue"].Value;
+                        cmd.Parameters.Clear();
+                        tran.Complete();
+                        if (ratio != null) return ratio.ToString();
+                        //Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTA CONFERÊNCIA FOI ATUALIZADA.");
+                        return null;
+                    }
+                }
+                catch (SqlException exception)
+                {
+                    Console.WriteLine(exception.Message);
+                    return null;
+                }
+            }
         }
     }
 }

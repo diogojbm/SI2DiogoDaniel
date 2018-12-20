@@ -31,7 +31,7 @@ namespace ConferenceManager
             mainOptions.Add(Function.ListCompatibleReviewers, ListCompatibleReviewers);
             mainOptions.Add(Function.AssignReviewerToRevision, AssignReviewerToRevision);
             mainOptions.Add(Function.RegisterRevision, RegisterRevision);
-            mainOptions.Add(Function.AcceptedSubmissionsPercentage, AcceptedSubmissionsPercentage);
+            mainOptions.Add(Function.AcceptedSubmissionsPercentage, CalcAcceptedSubmissionsRatio);
             mainOptions.Add(Function.ChangeSubmissionState, ChangeSubmissionState);
         }
 
@@ -121,30 +121,12 @@ namespace ConferenceManager
             service.RegisterRevision();
         }
 
-        private void AcceptedSubmissionsPercentage()
+        private void CalcAcceptedSubmissionsRatio()
         {
             Console.WriteLine("PERCENTAGEM DE SUBMISSÕES ACEITES");
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
-            string[] parameters = Console.ReadLine().Split(' ');
-
-            using (SqlConnection con = new SqlConnection())
-            {
-                con.ConnectionString = @"Data Source=VLABSIAD;Initial Catalog=ConferênciaAcadémica;Integrated Security=True";
-                con.Open();
-
-                try
-                {
-                    SqlCommand cmd = con.CreateCommand();
-                    cmd.CommandText = $"SELECT ConferênciaAcadémica.PercentagemSubmissoesAceites('{parameters[0]}', {parameters[1]})";
-                    Console.WriteLine("PERCENTAGEM DE SUBMISSÕES ACEITES: " + cmd.ExecuteScalar().ToString() + "%");
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-            }
+            service.CalcAcceptedSubmissionsRatio();
         }
+
         private void ChangeSubmissionState()
         {
             Console.WriteLine("ALTERAR O ESTADO DE TODAS AS SUBMISSÕES");
@@ -204,7 +186,11 @@ namespace ConferenceManager
     }
 
     class Program
-    {
+    {   /*
+        - H) O resultado é um select a uma tabela temporária. Como é que uso mapeamento para retornar a tabela?
+        - J) Implica fazer um Insert numa tabela e um Update noutra. Tudo dentro do procedimento. Como é que faço o mapeamento dividido? Assim teria que correr o procedimento duas vezes...
+        - L) Falta só fazer. Neste é para fazer um Read e a cada lido aplicar a condição que faz mudar o seu estado
+        */
         static void Main(string[] args)
         {
             App.Instance.Run();
