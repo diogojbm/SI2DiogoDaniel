@@ -34,6 +34,7 @@ namespace ConferenceManager
                     c.AnoRealizacao = Int32.Parse(parameters[2]);
 
                     cm.ExecUpdateRevisionLimitDate(ctx, c);
+                    // Where are we going to use repository and where are we going to use proxy to do lazy load and to map something?
                     c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
 
                     if (c != null) Console.WriteLine("NOVA DATA LIMITE DE REVISAO: " + c.DataLimiteRevisao);
