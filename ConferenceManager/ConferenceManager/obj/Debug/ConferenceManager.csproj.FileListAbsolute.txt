@@ -11,3 +11,8 @@ C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager
 C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\obj\Debug\ConferenceManager.exe
 C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\obj\Debug\ConferenceManager.pdb
 C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\obj\Debug\ConferenceManager.csprojResolveAssemblyReference.cache
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\bin\Debug\EntityFramework.dll
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\bin\Debug\EntityFramework.xml
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\obj\Debug\ConferenceManager.csproj.CopyComplete

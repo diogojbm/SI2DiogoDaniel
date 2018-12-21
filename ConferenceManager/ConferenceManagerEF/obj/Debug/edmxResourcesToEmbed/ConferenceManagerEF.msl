@@ -1,0 +1,106 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ConferênciaAcadémicaModelStoreContainer" CdmEntityContainer="ConferênciaAcadémicaEntities">
+    <EntitySetMapping Name="Artigoes">
+      <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Artigo">
+        <MappingFragment StoreEntitySet="Artigo">
+          <ScalarProperty Name="identificador" ColumnName="identificador" />
+          <ScalarProperty Name="resumo" ColumnName="resumo" />
+          <ScalarProperty Name="dataSubmissao" ColumnName="dataSubmissao" />
+          <ScalarProperty Name="nomeConferencia" ColumnName="nomeConferencia" />
+          <ScalarProperty Name="anoConferencia" ColumnName="anoConferencia" />
+          <ScalarProperty Name="estado" ColumnName="estado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Conferencias">
+      <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Conferencia">
+        <MappingFragment StoreEntitySet="Conferencia">
+          <ScalarProperty Name="nome" ColumnName="nome" />
+          <ScalarProperty Name="anoRealizacao" ColumnName="anoRealizacao" />
+          <ScalarProperty Name="acronimo" ColumnName="acronimo" />
+          <ScalarProperty Name="dataLimiteRevisao" ColumnName="dataLimiteRevisao" />
+          <ScalarProperty Name="dataLimiteSubmissao" ColumnName="dataLimiteSubmissao" />
+          <ScalarProperty Name="emailPresidente" ColumnName="emailPresidente" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Ficheiroes">
+      <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Ficheiro">
+        <MappingFragment StoreEntitySet="Ficheiro">
+          <ScalarProperty Name="nome" ColumnName="nome" />
+          <ScalarProperty Name="idArtigo" ColumnName="idArtigo" />
+          <ScalarProperty Name="nomeConferencia" ColumnName="nomeConferencia" />
+          <ScalarProperty Name="anoConferencia" ColumnName="anoConferencia" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Inscricaos">
+      <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Inscricao">
+        <MappingFragment StoreEntitySet="Inscricao">
+          <ScalarProperty Name="dataRegisto" ColumnName="dataRegisto" />
+          <ScalarProperty Name="nomeConferencia" ColumnName="nomeConferencia" />
+          <ScalarProperty Name="anoConferencia" ColumnName="anoConferencia" />
+          <ScalarProperty Name="emailUtilizador" ColumnName="emailUtilizador" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Instituicaos">
+      <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Instituicao">
+        <MappingFragment StoreEntitySet="Instituicao">
+          <ScalarProperty Name="nome" ColumnName="nome" />
+          <ScalarProperty Name="morada" ColumnName="morada" />
+          <ScalarProperty Name="pais" ColumnName="pais" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Revisaos">
+      <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Revisao">
+        <MappingFragment StoreEntitySet="Revisao">
+          <ScalarProperty Name="notaMinima" ColumnName="notaMinima" />
+          <ScalarProperty Name="nota" ColumnName="nota" />
+          <ScalarProperty Name="texto" ColumnName="texto" />
+          <ScalarProperty Name="idArtigo" ColumnName="idArtigo" />
+          <ScalarProperty Name="emailRevisor" ColumnName="emailRevisor" />
+          <ScalarProperty Name="nomeConferencia" ColumnName="nomeConferencia" />
+          <ScalarProperty Name="anoConferencia" ColumnName="anoConferencia" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Submissaos">
+      <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Submissao">
+        <MappingFragment StoreEntitySet="Submissao">
+          <ScalarProperty Name="idArtigo" ColumnName="idArtigo" />
+          <ScalarProperty Name="emailAutor" ColumnName="emailAutor" />
+          <ScalarProperty Name="responsavel" ColumnName="responsavel" />
+          <ScalarProperty Name="nomeConferencia" ColumnName="nomeConferencia" />
+          <ScalarProperty Name="anoConferencia" ColumnName="anoConferencia" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Utilizadors">
+      <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Utilizador">
+        <MappingFragment StoreEntitySet="Utilizador">
+          <ScalarProperty Name="email" ColumnName="email" />
+          <ScalarProperty Name="nome" ColumnName="nome" />
+          <ScalarProperty Name="nomeInstituicao" ColumnName="nomeInstituicao" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <FunctionImportMapping FunctionImportName="AtribuirPapelAutor" FunctionName="ConferênciaAcadémicaModel.Store.AtribuirPapelAutor" />
+    <FunctionImportMapping FunctionImportName="AtribuirPapelPresidente" FunctionName="ConferênciaAcadémicaModel.Store.AtribuirPapelPresidente" />
+    <FunctionImportMapping FunctionImportName="AtribuirPapelRevisor" FunctionName="ConferênciaAcadémicaModel.Store.AtribuirPapelRevisor" />
+    <FunctionImportMapping FunctionImportName="AtribuirRevisor" FunctionName="ConferênciaAcadémicaModel.Store.AtribuirRevisor" />
+    <FunctionImportMapping FunctionImportName="AtualizarConferenciaDataLimiteRevisao" FunctionName="ConferênciaAcadémicaModel.Store.AtualizarConferenciaDataLimiteRevisao" />
+    <FunctionImportMapping FunctionImportName="AtualizarConferenciaDataLimiteSubmissao" FunctionName="ConferênciaAcadémicaModel.Store.AtualizarConferenciaDataLimiteSubmissao" />
+    <FunctionImportMapping FunctionImportName="AtualizarConferenciaPresidente" FunctionName="ConferênciaAcadémicaModel.Store.AtualizarConferenciaPresidente" />
+    <FunctionImportMapping FunctionImportName="AtualizarEstado" FunctionName="ConferênciaAcadémicaModel.Store.AtualizarEstado" />
+    <FunctionImportMapping FunctionImportName="AtualizarUtilizador" FunctionName="ConferênciaAcadémicaModel.Store.AtualizarUtilizador" />
+    <FunctionImportMapping FunctionImportName="InserirArtigo" FunctionName="ConferênciaAcadémicaModel.Store.InserirArtigo" />
+    <FunctionImportMapping FunctionImportName="InserirUtilizador" FunctionName="ConferênciaAcadémicaModel.Store.InserirUtilizador" />
+    <FunctionImportMapping FunctionImportName="ListarRevisores" FunctionName="ConferênciaAcadémicaModel.Store.ListarRevisores" />
+    <FunctionImportMapping FunctionImportName="RegistarRevisao" FunctionName="ConferênciaAcadémicaModel.Store.RegistarRevisao" />
+    <FunctionImportMapping FunctionImportName="RemoverArtigo" FunctionName="ConferênciaAcadémicaModel.Store.RemoverArtigo" />
+    <FunctionImportMapping FunctionImportName="RemoverUtilizador" FunctionName="ConferênciaAcadémicaModel.Store.RemoverUtilizador" />
+  </EntityContainerMapping>
+</Mapping>

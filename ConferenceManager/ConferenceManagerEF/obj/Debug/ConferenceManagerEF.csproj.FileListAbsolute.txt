@@ -1,0 +1,12 @@
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManagerEF\bin\Debug\ConferenceManagerEF.exe.config
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManagerEF\bin\Debug\ConferenceManagerEF.exe
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManagerEF\bin\Debug\ConferenceManagerEF.pdb
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManagerEF\bin\Debug\EntityFramework.dll
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManagerEF\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManagerEF\bin\Debug\EntityFramework.xml
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManagerEF\bin\Debug\EntityFramework.SqlServer.xml
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManagerEF\obj\Debug\ConferenceManagerEF.csprojResolveAssemblyReference.cache
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManagerEF\obj\Debug\ConferenceManagerEF.csproj.CoreCompileInputs.cache
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManagerEF\obj\Debug\ConferenceManagerEF.csproj.CopyComplete
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManagerEF\obj\Debug\ConferenceManagerEF.exe
+C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManagerEF\obj\Debug\ConferenceManagerEF.pdb

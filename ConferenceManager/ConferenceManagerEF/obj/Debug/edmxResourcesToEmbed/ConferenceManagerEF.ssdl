@@ -1,0 +1,381 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ConferênciaAcadémicaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="Artigo">
+    <Key>
+      <PropertyRef Name="identificador" />
+      <PropertyRef Name="nomeConferencia" />
+      <PropertyRef Name="anoConferencia" />
+    </Key>
+    <Property Name="identificador" Type="int" Nullable="false" />
+    <Property Name="resumo" Type="varchar" MaxLength="50" />
+    <Property Name="dataSubmissao" Type="date" />
+    <Property Name="nomeConferencia" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="anoConferencia" Type="int" Nullable="false" />
+    <Property Name="estado" Type="varchar" MaxLength="10" />
+  </EntityType>
+  <EntityType Name="Conferencia">
+    <Key>
+      <PropertyRef Name="nome" />
+      <PropertyRef Name="anoRealizacao" />
+    </Key>
+    <Property Name="nome" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="anoRealizacao" Type="int" Nullable="false" />
+    <Property Name="acronimo" Type="varchar" MaxLength="5" Nullable="false" />
+    <Property Name="dataLimiteRevisao" Type="date" Nullable="false" />
+    <Property Name="dataLimiteSubmissao" Type="date" Nullable="false" />
+    <Property Name="emailPresidente" Type="varchar" MaxLength="60" />
+  </EntityType>
+  <EntityType Name="Ficheiro">
+    <Key>
+      <PropertyRef Name="nome" />
+      <PropertyRef Name="idArtigo" />
+      <PropertyRef Name="nomeConferencia" />
+      <PropertyRef Name="anoConferencia" />
+    </Key>
+    <Property Name="nome" Type="varchar" MaxLength="20" Nullable="false" />
+    <Property Name="idArtigo" Type="int" Nullable="false" />
+    <Property Name="nomeConferencia" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="anoConferencia" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Inscricao">
+    <Key>
+      <PropertyRef Name="nomeConferencia" />
+      <PropertyRef Name="anoConferencia" />
+      <PropertyRef Name="emailUtilizador" />
+    </Key>
+    <Property Name="dataRegisto" Type="date" Nullable="false" />
+    <Property Name="nomeConferencia" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="anoConferencia" Type="int" Nullable="false" />
+    <Property Name="emailUtilizador" Type="varchar" MaxLength="60" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Instituicao">
+    <Key>
+      <PropertyRef Name="nome" />
+    </Key>
+    <Property Name="nome" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="morada" Type="varchar" MaxLength="60" Nullable="false" />
+    <Property Name="pais" Type="varchar" MaxLength="20" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Revisao">
+    <Key>
+      <PropertyRef Name="idArtigo" />
+      <PropertyRef Name="emailRevisor" />
+      <PropertyRef Name="nomeConferencia" />
+      <PropertyRef Name="anoConferencia" />
+    </Key>
+    <Property Name="notaMinima" Type="int" Nullable="false" />
+    <Property Name="nota" Type="int" Nullable="false" />
+    <Property Name="texto" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="idArtigo" Type="int" Nullable="false" />
+    <Property Name="emailRevisor" Type="varchar" MaxLength="60" Nullable="false" />
+    <Property Name="nomeConferencia" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="anoConferencia" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Submissao">
+    <Key>
+      <PropertyRef Name="idArtigo" />
+      <PropertyRef Name="emailAutor" />
+      <PropertyRef Name="nomeConferencia" />
+      <PropertyRef Name="anoConferencia" />
+    </Key>
+    <Property Name="idArtigo" Type="int" Nullable="false" />
+    <Property Name="emailAutor" Type="varchar" MaxLength="60" Nullable="false" />
+    <Property Name="responsavel" Type="bit" Nullable="false" />
+    <Property Name="nomeConferencia" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="anoConferencia" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="Utilizador">
+    <Key>
+      <PropertyRef Name="email" />
+    </Key>
+    <Property Name="email" Type="varchar" MaxLength="60" Nullable="false" />
+    <Property Name="nome" Type="varchar" MaxLength="30" Nullable="false" />
+    <Property Name="nomeInstituicao" Type="varchar" MaxLength="30" Nullable="false" />
+  </EntityType>
+  <Association Name="FK__Artigo__3F466844">
+    <End Role="Conferencia" Type="Self.Conferencia" Multiplicity="1" />
+    <End Role="Artigo" Type="Self.Artigo" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Conferencia">
+        <PropertyRef Name="nome" />
+        <PropertyRef Name="anoRealizacao" />
+      </Principal>
+      <Dependent Role="Artigo">
+        <PropertyRef Name="nomeConferencia" />
+        <PropertyRef Name="anoConferencia" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Conferenc__email__3C69FB99">
+    <End Role="Utilizador" Type="Self.Utilizador" Multiplicity="0..1" />
+    <End Role="Conferencia" Type="Self.Conferencia" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Utilizador">
+        <PropertyRef Name="email" />
+      </Principal>
+      <Dependent Role="Conferencia">
+        <PropertyRef Name="emailPresidente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Ficheiro__4222D4EF">
+    <End Role="Artigo" Type="Self.Artigo" Multiplicity="1" />
+    <End Role="Ficheiro" Type="Self.Ficheiro" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Artigo">
+        <PropertyRef Name="identificador" />
+        <PropertyRef Name="nomeConferencia" />
+        <PropertyRef Name="anoConferencia" />
+      </Principal>
+      <Dependent Role="Ficheiro">
+        <PropertyRef Name="idArtigo" />
+        <PropertyRef Name="nomeConferencia" />
+        <PropertyRef Name="anoConferencia" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Inscricao__4CA06362">
+    <End Role="Conferencia" Type="Self.Conferencia" Multiplicity="1" />
+    <End Role="Inscricao" Type="Self.Inscricao" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Conferencia">
+        <PropertyRef Name="nome" />
+        <PropertyRef Name="anoRealizacao" />
+      </Principal>
+      <Dependent Role="Inscricao">
+        <PropertyRef Name="nomeConferencia" />
+        <PropertyRef Name="anoConferencia" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Inscricao__email__4D94879B">
+    <End Role="Utilizador" Type="Self.Utilizador" Multiplicity="1" />
+    <End Role="Inscricao" Type="Self.Inscricao" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Utilizador">
+        <PropertyRef Name="email" />
+      </Principal>
+      <Dependent Role="Inscricao">
+        <PropertyRef Name="emailUtilizador" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Revisao__45F365D3">
+    <End Role="Artigo" Type="Self.Artigo" Multiplicity="1" />
+    <End Role="Revisao" Type="Self.Revisao" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Artigo">
+        <PropertyRef Name="identificador" />
+        <PropertyRef Name="nomeConferencia" />
+        <PropertyRef Name="anoConferencia" />
+      </Principal>
+      <Dependent Role="Revisao">
+        <PropertyRef Name="idArtigo" />
+        <PropertyRef Name="nomeConferencia" />
+        <PropertyRef Name="anoConferencia" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Revisao__emailRe__44FF419A">
+    <End Role="Utilizador" Type="Self.Utilizador" Multiplicity="1" />
+    <End Role="Revisao" Type="Self.Revisao" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Utilizador">
+        <PropertyRef Name="email" />
+      </Principal>
+      <Dependent Role="Revisao">
+        <PropertyRef Name="emailRevisor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Submissao__49C3F6B7">
+    <End Role="Artigo" Type="Self.Artigo" Multiplicity="1" />
+    <End Role="Submissao" Type="Self.Submissao" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Artigo">
+        <PropertyRef Name="identificador" />
+        <PropertyRef Name="nomeConferencia" />
+        <PropertyRef Name="anoConferencia" />
+      </Principal>
+      <Dependent Role="Submissao">
+        <PropertyRef Name="idArtigo" />
+        <PropertyRef Name="nomeConferencia" />
+        <PropertyRef Name="anoConferencia" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Submissao__email__48CFD27E">
+    <End Role="Utilizador" Type="Self.Utilizador" Multiplicity="1" />
+    <End Role="Submissao" Type="Self.Submissao" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Utilizador">
+        <PropertyRef Name="email" />
+      </Principal>
+      <Dependent Role="Submissao">
+        <PropertyRef Name="emailAutor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK__Utilizado__nomeI__398D8EEE">
+    <End Role="Instituicao" Type="Self.Instituicao" Multiplicity="1" />
+    <End Role="Utilizador" Type="Self.Utilizador" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Instituicao">
+        <PropertyRef Name="nome" />
+      </Principal>
+      <Dependent Role="Utilizador">
+        <PropertyRef Name="nomeInstituicao" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Function Name="AtribuirPapelAutor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica">
+    <Parameter Name="idArtigo" Type="varchar" Mode="In" />
+    <Parameter Name="email" Type="varchar" Mode="In" />
+    <Parameter Name="responsavel" Type="bit" Mode="In" />
+    <Parameter Name="nomeConferencia" Type="varchar" Mode="In" />
+    <Parameter Name="anoConferencia" Type="int" Mode="In" />
+  </Function>
+  <Function Name="AtribuirPapelPresidente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica">
+    <Parameter Name="email" Type="varchar" Mode="In" />
+    <Parameter Name="nomeConferencia" Type="varchar" Mode="In" />
+    <Parameter Name="anoConferencia" Type="int" Mode="In" />
+  </Function>
+  <Function Name="AtribuirPapelRevisor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica">
+    <Parameter Name="idArtigo" Type="int" Mode="In" />
+    <Parameter Name="email" Type="varchar" Mode="In" />
+    <Parameter Name="nomeConferencia" Type="varchar" Mode="In" />
+    <Parameter Name="anoConferencia" Type="int" Mode="In" />
+  </Function>
+  <Function Name="AtribuirRevisor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica">
+    <Parameter Name="emailRevisor" Type="varchar" Mode="In" />
+    <Parameter Name="idArtigo" Type="int" Mode="In" />
+    <Parameter Name="nomeConferencia" Type="varchar" Mode="In" />
+    <Parameter Name="anoConferencia" Type="int" Mode="In" />
+  </Function>
+  <Function Name="AtualizarConferenciaDataLimiteRevisao" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica">
+    <Parameter Name="dataRevisao" Type="date" Mode="In" />
+    <Parameter Name="nomeConferencia" Type="varchar" Mode="In" />
+    <Parameter Name="anoConferencia" Type="int" Mode="In" />
+  </Function>
+  <Function Name="AtualizarConferenciaDataLimiteSubmissao" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica">
+    <Parameter Name="dataSubmissao" Type="date" Mode="In" />
+    <Parameter Name="nomeConferencia" Type="varchar" Mode="In" />
+    <Parameter Name="anoConferencia" Type="int" Mode="In" />
+  </Function>
+  <Function Name="AtualizarConferenciaPresidente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica">
+    <Parameter Name="emailPres" Type="varchar" Mode="In" />
+    <Parameter Name="nomeConferencia" Type="varchar" Mode="In" />
+    <Parameter Name="anoConferencia" Type="int" Mode="In" />
+  </Function>
+  <Function Name="AtualizarEstado" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica">
+    <Parameter Name="estadoNovo" Type="varchar" Mode="In" />
+    <Parameter Name="idArtigo" Type="int" Mode="In" />
+    <Parameter Name="nomeConferencia" Type="varchar" Mode="In" />
+    <Parameter Name="anoConferencia" Type="int" Mode="In" />
+  </Function>
+  <Function Name="AtualizarUtilizador" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica">
+    <Parameter Name="email" Type="varchar" Mode="In" />
+    <Parameter Name="nomeInstituicao" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="InserirArtigo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica">
+    <Parameter Name="id" Type="int" Mode="In" />
+    <Parameter Name="resumo" Type="varchar" Mode="In" />
+    <Parameter Name="dataSubmissao" Type="date" Mode="In" />
+    <Parameter Name="nomeConferencia" Type="varchar" Mode="In" />
+    <Parameter Name="anoConferencia" Type="int" Mode="In" />
+    <Parameter Name="autor" Type="varchar" Mode="In" />
+    <Parameter Name="responsavel" Type="bit" Mode="In" />
+  </Function>
+  <Function Name="InserirUtilizador" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica">
+    <Parameter Name="email" Type="varchar" Mode="In" />
+    <Parameter Name="nome" Type="varchar" Mode="In" />
+    <Parameter Name="nomeInstituicao" Type="varchar" Mode="In" />
+    <Parameter Name="dataRegisto" Type="date" Mode="In" />
+    <Parameter Name="nomeConferencia" Type="varchar" Mode="In" />
+    <Parameter Name="anoConferencia" Type="int" Mode="In" />
+  </Function>
+  <Function Name="ListarRevisores" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica">
+    <Parameter Name="idArtigo" Type="int" Mode="In" />
+    <Parameter Name="nomeConferencia" Type="varchar" Mode="In" />
+    <Parameter Name="anoConferencia" Type="int" Mode="In" />
+  </Function>
+  <Function Name="PercentagemSubmissoesAceites" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica" ReturnType="decimal">
+    <Parameter Name="nomeConferencia" Type="varchar" Mode="In" />
+    <Parameter Name="anoConferencia" Type="int" Mode="In" />
+  </Function>
+  <Function Name="RegistarRevisao" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica">
+    <Parameter Name="dataRevisao" Type="date" Mode="In" />
+    <Parameter Name="notaMinima" Type="int" Mode="In" />
+    <Parameter Name="nota" Type="int" Mode="In" />
+    <Parameter Name="texto" Type="varchar" Mode="In" />
+    <Parameter Name="idArtigo" Type="int" Mode="In" />
+    <Parameter Name="emailRevisor" Type="varchar" Mode="In" />
+    <Parameter Name="nomeConferencia" Type="varchar" Mode="In" />
+    <Parameter Name="anoConferencia" Type="int" Mode="In" />
+  </Function>
+  <Function Name="RemoverArtigo" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica">
+    <Parameter Name="idArtigo" Type="int" Mode="In" />
+    <Parameter Name="nomeConferencia" Type="varchar" Mode="In" />
+    <Parameter Name="anoConferencia" Type="int" Mode="In" />
+  </Function>
+  <Function Name="RemoverUtilizador" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica">
+    <Parameter Name="email" Type="varchar" Mode="In" />
+    <Parameter Name="nomeInstituicao" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="VerificarPapel" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica" ReturnType="bit">
+    <Parameter Name="email" Type="varchar" Mode="In" />
+    <Parameter Name="nomeConferencia" Type="varchar" Mode="In" />
+    <Parameter Name="anoConferencia" Type="int" Mode="In" />
+    <Parameter Name="idArtigo" Type="int" Mode="In" />
+  </Function>
+  <EntityContainer Name="ConferênciaAcadémicaModelStoreContainer">
+    <EntitySet Name="Artigo" EntityType="Self.Artigo" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Conferencia" EntityType="Self.Conferencia" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Ficheiro" EntityType="Self.Ficheiro" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Inscricao" EntityType="Self.Inscricao" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Instituicao" EntityType="Self.Instituicao" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Revisao" EntityType="Self.Revisao" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Submissao" EntityType="Self.Submissao" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Utilizador" EntityType="Self.Utilizador" Schema="dbo" store:Type="Tables" />
+    <AssociationSet Name="FK__Artigo__3F466844" Association="Self.FK__Artigo__3F466844">
+      <End Role="Conferencia" EntitySet="Conferencia" />
+      <End Role="Artigo" EntitySet="Artigo" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Conferenc__email__3C69FB99" Association="Self.FK__Conferenc__email__3C69FB99">
+      <End Role="Utilizador" EntitySet="Utilizador" />
+      <End Role="Conferencia" EntitySet="Conferencia" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Ficheiro__4222D4EF" Association="Self.FK__Ficheiro__4222D4EF">
+      <End Role="Artigo" EntitySet="Artigo" />
+      <End Role="Ficheiro" EntitySet="Ficheiro" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Inscricao__4CA06362" Association="Self.FK__Inscricao__4CA06362">
+      <End Role="Conferencia" EntitySet="Conferencia" />
+      <End Role="Inscricao" EntitySet="Inscricao" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Inscricao__email__4D94879B" Association="Self.FK__Inscricao__email__4D94879B">
+      <End Role="Utilizador" EntitySet="Utilizador" />
+      <End Role="Inscricao" EntitySet="Inscricao" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Revisao__45F365D3" Association="Self.FK__Revisao__45F365D3">
+      <End Role="Artigo" EntitySet="Artigo" />
+      <End Role="Revisao" EntitySet="Revisao" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Revisao__emailRe__44FF419A" Association="Self.FK__Revisao__emailRe__44FF419A">
+      <End Role="Utilizador" EntitySet="Utilizador" />
+      <End Role="Revisao" EntitySet="Revisao" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Submissao__49C3F6B7" Association="Self.FK__Submissao__49C3F6B7">
+      <End Role="Artigo" EntitySet="Artigo" />
+      <End Role="Submissao" EntitySet="Submissao" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Submissao__email__48CFD27E" Association="Self.FK__Submissao__email__48CFD27E">
+      <End Role="Utilizador" EntitySet="Utilizador" />
+      <End Role="Submissao" EntitySet="Submissao" />
+    </AssociationSet>
+    <AssociationSet Name="FK__Utilizado__nomeI__398D8EEE" Association="Self.FK__Utilizado__nomeI__398D8EEE">
+      <End Role="Instituicao" EntitySet="Instituicao" />
+      <End Role="Utilizador" EntitySet="Utilizador" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

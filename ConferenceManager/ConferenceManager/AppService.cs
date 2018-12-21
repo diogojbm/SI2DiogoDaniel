@@ -41,7 +41,7 @@ namespace ConferenceManager
                     c.AnoRealizacao = Int32.Parse(parameters[2]);
 
                     cm.ExecUpdateRevisionLimitDate(ctx, c);
-                    // Where are we going to use repository and where are we going to use proxy to do lazy load and to map something?
+
                     c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
 
                     if (c != null) Console.WriteLine("DATA LIMITE DE REVISAO: " + c.DataLimiteRevisao);
@@ -76,7 +76,7 @@ namespace ConferenceManager
                     c.AnoRealizacao = Int32.Parse(parameters[2]);
 
                     cm.ExecUpdateSubmissionLimitDate(ctx, c);
-                    // Where are we going to use repository and where are we going to use proxy to do lazy load and to map something?
+
                     c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
 
                     if (c != null) Console.WriteLine("DATA LIMITE DE SUBMISSÃO: " + c.DataLimiteSubmissao);
@@ -108,7 +108,7 @@ namespace ConferenceManager
                 c.AnoRealizacao = Int32.Parse(parameters[2]);
 
                 cm.ExecUpdatePresident(ctx, c);
-                // Where are we going to use repository and where are we going to use proxy to do lazy load and to map something?
+
                 c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
 
                 if (c != null) Console.WriteLine("PRESIDENTE: " + c.EmailPresidente);
@@ -147,7 +147,7 @@ namespace ConferenceManager
                 s.AnoConferencia = Int32.Parse(parameters[4]);
 
                 sm.ExecNewAuthor(ctx, s);
-                // Where are we going to use repository and where are we going to use proxy to do lazy load and to map something?
+
                 s = sm.Read(new Tuple<int, string, string, int>(s.IDArtigo, s.EmailAutor, s.NomeConferencia, s.AnoConferencia));
 
                 if (s != null) Console.WriteLine("NOVO AUTOR: " + s.EmailAutor);
@@ -159,6 +159,7 @@ namespace ConferenceManager
 
             ctx.Dispose();
         }
+
         public void AssignReviserRole()
         {
             ctx.Open();
@@ -177,7 +178,7 @@ namespace ConferenceManager
                 r.AnoConferencia = Int32.Parse(parameters[3]);
 
                 rm.ExecNewReviser(ctx, r);
-                // Where are we going to use repository and where are we going to use proxy to do lazy load and to map something?
+
                 r = rm.Read(new Tuple<int, string, string, int>(r.IDArtigo, r.EmailRevisor, r.NomeConferencia, r.AnoConferencia));
 
                 if (r != null) Console.WriteLine("NOVO REVISOR: " + r.EmailRevisor);
@@ -207,7 +208,7 @@ namespace ConferenceManager
                 c.AnoRealizacao = Int32.Parse(parameters[2]);
 
                 cm.ExecAssignPresident(ctx, c);
-                // Where are we going to use repository and where are we going to use proxy to do lazy load and to map something?
+
                 c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
 
                 if (c != null) Console.WriteLine("PRESIDENTE: " + c.EmailPresidente);
@@ -270,7 +271,7 @@ namespace ConferenceManager
                 r.AnoConferencia = Int32.Parse(parameters[3]);
 
                 rm.ExecAssignReviser(ctx, r);
-                // Where are we going to use repository and where are we going to use proxy to do lazy load and to map something?
+                //ctx.Revisoes.Find()
                 r = rm.Read(new Tuple<int, string, string, int>(r.IDArtigo, r.EmailRevisor, r.NomeConferencia, r.AnoConferencia));
 
                 if (r != null) Console.WriteLine("REVISOR: " + r.EmailRevisor);
@@ -309,7 +310,7 @@ namespace ConferenceManager
                     r.AnoConferencia = Int32.Parse(parameters[7]);
 
                     rm.ExecRegisterRevision(ctx, parameters[0], r);
-                    // Where are we going to use repository and where are we going to use proxy to do lazy load and to map something?
+
                     r = rm.Read(new Tuple<int, string, string, int>(r.IDArtigo, r.EmailRevisor, r.NomeConferencia, r.AnoConferencia));
                     if (r != null)
                     {
@@ -345,7 +346,6 @@ namespace ConferenceManager
                 c.AnoRealizacao = Int32.Parse(parameters[1]);
 
                 ratio = cm.ExecCalcAcceptedSubmissionsRatio(ctx, c);
-                // Where are we going to use repository and where are we going to use proxy to do lazy load and to map something?
 
                 if (ratio != null)
                 {
