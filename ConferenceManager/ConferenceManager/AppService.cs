@@ -1,7 +1,8 @@
 ﻿using ConferenceManager.Concrete;
 using ConferenceManager.Model;
 using System;
-using System.Data.SqlClient;
+using System.Configuration;
+
 
 namespace ConferenceManager
 {
@@ -11,7 +12,7 @@ namespace ConferenceManager
         private SubmissaoMapper sm;
         private RevisaoMapper rm;
         private ArtigoMapper am;
-        private Context ctx = new Context(@"Data Source=LAPTOP-VLEG347R;Initial Catalog=ConferênciaAcadémica;Integrated Security=True");
+        private Context ctx = new Context(ConfigurationManager.ConnectionStrings["cs"].ConnectionString);
         public AppService()
         {
             cm = new ConferenciaMapper(ctx);
@@ -54,6 +55,7 @@ namespace ConferenceManager
 
             ctx.Dispose();
         }
+
         public void UpdateSubmissionLimitDate()
         {
             ctx.Open();
@@ -88,6 +90,7 @@ namespace ConferenceManager
 
             ctx.Dispose();
         }
+
         public void UpdateConferencePresident()
         {
             ctx.Open();
@@ -117,6 +120,7 @@ namespace ConferenceManager
 
             ctx.Dispose();
         }
+
         public void AssignAuthorRole()
         {
             ctx.Open();
@@ -185,6 +189,7 @@ namespace ConferenceManager
 
             ctx.Dispose();
         }
+
         public void AssignPresident()
         {
             ctx.Open();
@@ -278,7 +283,7 @@ namespace ConferenceManager
             ctx.Dispose();
         }
         
-        //TO-DO:
+        //A DATA TEM DE SER ALGO COMO 20181112 PORQUE A DATA LIMITE DE REVISAO DA CONFERENCIA B 2018 FOI ALTERADA PARA 20181120
         public void RegisterRevision()
         {
             ctx.Open();
@@ -288,29 +293,43 @@ namespace ConferenceManager
             string[] parameters = Console.ReadLine().Split(' ');
 
             Revisao r = new Revisao();
+            Artigo a = new Artigo();
 
-            if (parameters.Length == 4)
+            if (parameters.Length == 8)
             {
-                r.EmailRevisor = parameters[0];
-                r.IDArtigo = Int32.Parse(parameters[1]);
-                r.NomeConferencia = parameters[2];
-                r.AnoConferencia = Int32.Parse(parameters[3]);
+                DateTime date;
+                if (DateTime.TryParseExact(parameters[0], "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
+                {
+                    r.NotaMinima = Int32.Parse(parameters[1]);
+                    r.Nota = Int32.Parse(parameters[2]);
+                    r.Texto = parameters[3];
+                    r.IDArtigo = Int32.Parse(parameters[4]);
+                    r.EmailRevisor = parameters[5];
+                    r.NomeConferencia = parameters[6];
+                    r.AnoConferencia = Int32.Parse(parameters[7]);
 
-                rm.ExecAssignReviser(ctx, r);
-                // Where are we going to use repository and where are we going to use proxy to do lazy load and to map something?
-                r = rm.Read(new Tuple<int, string, string, int>(r.IDArtigo, r.EmailRevisor, r.NomeConferencia, r.AnoConferencia));
-
-                if (r != null) Console.WriteLine("REVISOR: " + r.EmailRevisor);
-                Console.WriteLine();
-                Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                    rm.ExecRegisterRevision(ctx, parameters[0], r);
+                    // Where are we going to use repository and where are we going to use proxy to do lazy load and to map something?
+                    r = rm.Read(new Tuple<int, string, string, int>(r.IDArtigo, r.EmailRevisor, r.NomeConferencia, r.AnoConferencia));
+                    if (r != null)
+                    {
+                        a = am.Read(new Tuple<int, string, int>(r.IDArtigo, r.NomeConferencia, r.AnoConferencia));
+                        if (a != null)
+                        {
+                            Console.WriteLine("REVISAO: " + r.NotaMinima + " " + r.Nota + " " + r.Texto + " " + r.IDArtigo + " " + r.EmailRevisor + " " + r.NomeConferencia + " " + r.AnoConferencia + " " + r.EmailRevisor + "\n");
+                            Console.WriteLine("NOVO ESTADO DE ARTIGO: " + a.Estado);
+                        }
+                    }
+                    Console.WriteLine();
+                    Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                }
+                else Console.WriteLine("ERRO NO FORMATO DA DATA DE REVISÃO INSERIDA. PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
             }
-
             else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
 
             ctx.Dispose();
         }
 
-        //TO-DO:
         public void CalcAcceptedSubmissionsRatio() {
             ctx.Open();
 
@@ -327,7 +346,6 @@ namespace ConferenceManager
 
                 ratio = cm.ExecCalcAcceptedSubmissionsRatio(ctx, c);
                 // Where are we going to use repository and where are we going to use proxy to do lazy load and to map something?
-                //a = rm.Read(new Tuple<int, string, string, int>(a.IDArtigo, a.EmailRevisor, a.NomeConferencia, a.AnoConferencia));
 
                 if (ratio != null)
                 {

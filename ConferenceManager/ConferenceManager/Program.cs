@@ -22,6 +22,7 @@ namespace ConferenceManager
             AcceptedSubmissionsPercentage,
             ChangeSubmissionState
         }
+
         private App()
         {
             service = new AppService();
@@ -105,16 +106,19 @@ namespace ConferenceManager
                 service.AssignPresident();
             }
         }
+
         private void ListCompatibleReviewers()
         {
             Console.WriteLine("LISTAR REVISORES COMPATÍVEIS COM REVISÃO");
             service.ListRevisers();
         }
+
         private void AssignReviewerToRevision()
         {
             Console.WriteLine("ATRIBUIR REVISOR A UMA REVISÃO");
             service.AssignReviser();
         }
+
         private void RegisterRevision()
         {
             Console.WriteLine("REGISTAR REVISÃO");
@@ -163,6 +167,7 @@ namespace ConferenceManager
 
             return function;
         }
+
         public void Run()
         {
             Function userInput = Function.Unknown;
@@ -182,13 +187,11 @@ namespace ConferenceManager
 
             } while (userInput != Function.Exit);
         }
-
     }
 
     class Program
     {   /*
         - H) O resultado é um select a uma tabela temporária. Como é que uso mapeamento para retornar a tabela?
-        - J) Implica fazer um Insert numa tabela e um Update noutra. Tudo dentro do procedimento. Como é que faço o mapeamento dividido? Assim teria que correr o procedimento duas vezes...
         - L) Falta só fazer. Neste é para fazer um Read e a cada lido aplicar a condição que faz mudar o seu estado
         */
         static void Main(string[] args)

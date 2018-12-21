@@ -216,7 +216,52 @@ namespace ConferenceManager.Concrete
                     Console.WriteLine(exception.Message);
                 }
             }
+        }
 
+        protected string ExecRegisterRevisionText
+        {
+            get
+            {
+                return "ConferênciaAcadémica.RegistarRevisao";
+            }
+
+        }
+
+        protected void ExecRegisterRevisionParameters(SqlCommand cmd, string dataRevisao, Revisao r)
+        {
+            cmd.Parameters.Add(new SqlParameter("@dataRevisao", dataRevisao));
+            cmd.Parameters.Add(new SqlParameter("@notaMinima", r.NotaMinima));
+            cmd.Parameters.Add(new SqlParameter("@nota", r.Nota));
+            cmd.Parameters.Add(new SqlParameter("@texto", r.Texto));
+            cmd.Parameters.Add(new SqlParameter("@idArtigo", r.IDArtigo));
+            cmd.Parameters.Add(new SqlParameter("@emailRevisor", r.EmailRevisor));
+            cmd.Parameters.Add(new SqlParameter("@nomeConferencia", r.NomeConferencia));
+            cmd.Parameters.Add(new SqlParameter("@anoConferencia", r.AnoConferencia));
+        }
+
+        public void ExecRegisterRevision(Context ctx, string dataRevisao, Revisao r)
+        {
+            using (TransactionScope tran = new TransactionScope())
+            {
+                try
+                {
+                    using (SqlCommand cmd = ctx.createCommand())
+                    {
+                        //SqlTransaction transaction = con.BeginTransaction(System.Data.IsolationLevel.RepeatableRead);
+                        cmd.CommandText = ExecRegisterRevisionText;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        ExecRegisterRevisionParameters(cmd, dataRevisao, r);
+                        cmd.ExecuteNonQuery();
+                        cmd.Parameters.Clear();
+                        Console.WriteLine("OPERAÇÃO CONCLUÍDA COM SUCESSO! ESTA CONFERÊNCIA FOI ATUALIZADA.");
+                        tran.Complete();
+                    }
+                }
+                catch (SqlException exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+            }
         }
     }
 }
