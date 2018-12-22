@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{60E09C78-00E4-4F40-9B84-43F0A702FB26}</ProjectGuid>
+    <ProjectGuid>{B2EE40C4-9487-4EA7-8C51-D9ECF27C1FED}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>ConferenceManagerEF</RootNamespace>
     <AssemblyName>ConferenceManagerEF</AssemblyName>
@@ -41,10 +41,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
-    <Reference Include="System.Transactions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,48 +51,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AppService.cs" />
-    <Compile Include="Artigo.cs">
-      <DependentUpon>ConferenceManagerEF.tt</DependentUpon>
-    </Compile>
     <Compile Include="ConferenceManagerEF.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ConferenceManagerEF.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="ConferenceManagerEF.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>ConferenceManagerEF.tt</DependentUpon>
     </Compile>
     <Compile Include="ConferenceManagerEF.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>ConferenceManagerEF.edmx</DependentUpon>
     </Compile>
-    <Compile Include="Conferencia.cs">
-      <DependentUpon>ConferenceManagerEF.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Ficheiro.cs">
-      <DependentUpon>ConferenceManagerEF.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Inscricao.cs">
-      <DependentUpon>ConferenceManagerEF.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Instituicao.cs">
-      <DependentUpon>ConferenceManagerEF.tt</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Revisao.cs">
-      <DependentUpon>ConferenceManagerEF.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Submissao.cs">
-      <DependentUpon>ConferenceManagerEF.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Utilizador.cs">
-      <DependentUpon>ConferenceManagerEF.tt</DependentUpon>
-    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -111,12 +79,6 @@
     <Content Include="ConferenceManagerEF.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>ConferenceManagerEF.Context.cs</LastGenOutput>
-      <DependentUpon>ConferenceManagerEF.edmx</DependentUpon>
-    </Content>
-    <Content Include="ConferenceManagerEF.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ConferenceManagerEF.edmx</DependentUpon>
-      <LastGenOutput>ConferenceManagerEF.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <ItemGroup>
