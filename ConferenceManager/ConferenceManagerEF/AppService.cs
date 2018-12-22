@@ -24,12 +24,10 @@ namespace ConferenceManager
             a = new Artigo();
         }
 
-        //ctx.Database.SQLQuery<Conferencia>();
-
         public void UpdateRevisionLimitDate()
         {
             Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <DATA REVISÃO> <nome CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("PREENCHA OS CAMPOS: <DATA REVISÃO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Conferencia c = new Conferencia();
@@ -49,13 +47,14 @@ namespace ConferenceManager
                                     string nomeConferencia = parameters[1];
                                     int anoConferencia = Int32.Parse(parameters[2]);
                                     ctx.AtualizarConferenciaDataLimiteRevisao(date, nomeConferencia, anoConferencia);
-                                    Conferencia ic = ctx.Conferencias.Where(conf => conf.nome == nomeConferencia && conf.anoRealizacao == anoConferencia).SingleOrDefault();
-                                    ctx.Entry(ic).State = EntityState.Modified;
-                                    ctx.SaveChanges();
-                                    ts.Complete();
-                                    Console.WriteLine("DATA LIMITE DE REVISAO: " + ic.dataLimiteRevisao.ToString());
-                                    //DbRawSqlQuery sqlq = ctx.Database.SqlQuery<Conferencia>("SELECT * FROM Conferencia");
-                                    //c = cm.Read(new Tuple<string, int>(c.nome, c.anoRealizacao));*/
+                                    Conferencia ic = ctx.Conferencias.Find(nomeConferencia, anoConferencia);
+                                    if (ic != null)
+                                    {
+                                        ctx.Entry(ic).State = EntityState.Modified;
+                                        ctx.SaveChanges();
+                                        ts.Complete();
+                                        Console.WriteLine("NOVA DATA LIMITE DE REVISAO: " + ic.dataLimiteRevisao.ToString());
+                                    }
                                 }
                             }
                             catch (Exception e)
@@ -76,23 +75,42 @@ namespace ConferenceManager
         public void UpdateSubmissionLimitDate()
         {
             Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <DATA SUBMISSÃƒO> <nome CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("PREENCHA OS CAMPOS: <DATA SUBMISSÃO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Conferencia c = new Conferencia();
             DateTime date;
-
             if (parameters.Length == 3)
             {
                 if (DateTime.TryParseExact(parameters[0], "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
                 {
-                    c.dataLimiteSubmissao = date;
-                    c.nome = parameters[1];
-                    c.anoRealizacao = Int32.Parse(parameters[2]);
-
-                    //c = cm.Read(new Tuple<string, int>(c.nome, c.anoRealizacao));
-
-                    if (c != null) Console.WriteLine("DATA LIMITE DE SUBMISSÃO: " + c.dataLimiteSubmissao);
+                    using (var ts = new TransactionScope())
+                    {
+                        using (EntityConnection cn = new EntityConnection("name = ConferênciaAcadémicaEntities"))
+                        {
+                            try
+                            {
+                                using (var ctx = new ConferênciaAcadémicaEntities())
+                                {
+                                    string nomeConferencia = parameters[1];
+                                    int anoConferencia = Int32.Parse(parameters[2]);
+                                    ctx.AtualizarConferenciaDataLimiteSubmissao(date, nomeConferencia, anoConferencia);
+                                    Conferencia ic = ctx.Conferencias.Find(nomeConferencia, anoConferencia);
+                                    if (ic != null)
+                                    {
+                                        ctx.Entry(ic).State = EntityState.Modified;
+                                        ctx.SaveChanges();
+                                        ts.Complete();
+                                        Console.WriteLine("NOVA DATA LIMITE DE SUBMISSAO: " + ic.dataLimiteSubmissao.ToString());
+                                    }
+                                }
+                            }
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
+                        }
+                    }
                     Console.WriteLine();
                     Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
                 }
@@ -105,20 +123,40 @@ namespace ConferenceManager
         public void UpdateConferencePresident()
         {
             Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <EMAIL PRESIDENTE> <nome CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("PREENCHA OS CAMPOS: <EMAIL PRESIDENTE> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Conferencia c = new Conferencia();
-
             if (parameters.Length == 3)
             {
-                c.emailPresidente = parameters[0];
-                c.nome = parameters[1];
-                c.anoRealizacao = Int32.Parse(parameters[2]);
-
-                //c = cm.Read(new Tuple<string, int>(c.nome, c.anoRealizacao));
-
-                if (c != null) Console.WriteLine("PRESIDENTE: " + c.emailPresidente);
+                using (var ts = new TransactionScope())
+                {
+                    using (EntityConnection cn = new EntityConnection("name = ConferênciaAcadémicaEntities"))
+                    {
+                        try
+                        {
+                            using (var ctx = new ConferênciaAcadémicaEntities())
+                            {
+                                string emailPresidente = parameters[0];
+                                string nomeConferencia = parameters[1];
+                                int anoConferencia = Int32.Parse(parameters[2]);
+                                ctx.AtualizarConferenciaPresidente(emailPresidente, nomeConferencia, anoConferencia);
+                                Conferencia ic = ctx.Conferencias.Find(nomeConferencia, anoConferencia);
+                                if (ic != null)
+                                {
+                                    ctx.Entry(ic).State = EntityState.Modified;
+                                    ctx.SaveChanges();
+                                    ts.Complete();
+                                    Console.WriteLine("NOVO EMAIL DO PRESIDENTE: " + ic.emailPresidente.ToString());
+                                }
+                            }
+                        }
+                        catch (Exception e)
+                        {
+                            Console.WriteLine(e.Message);
+                        }
+                    }
+                }
                 Console.WriteLine();
                 Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
             }
@@ -129,7 +167,7 @@ namespace ConferenceManager
         public void AssignAuthorRole()
         {
             Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <EMAIL UTILIZADOR> <RESPONSÁVEL> <nome CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <EMAIL UTILIZADOR> <RESPONSÁVEL> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Submissao s = new Submissao();
@@ -161,7 +199,7 @@ namespace ConferenceManager
         public void AssignReviserRole()
         {
             Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <EMAIL UTILIZADOR> <nome CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <EMAIL UTILIZADOR> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Revisao r = new Revisao();
@@ -186,7 +224,7 @@ namespace ConferenceManager
         public void AssignPresident()
         {
             Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <EMAIL UTILIZADOR> <nome CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("PREENCHA OS CAMPOS: <EMAIL UTILIZADOR> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Conferencia c = new Conferencia();
@@ -209,7 +247,7 @@ namespace ConferenceManager
         public void ListRevisers()
         {
             Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <nome CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             /*
@@ -242,7 +280,7 @@ namespace ConferenceManager
         public void AssignReviser()
         {
             Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <EMAIL REVISOR> <ID ARTIGO> <nome CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("PREENCHA OS CAMPOS: <EMAIL REVISOR> <ID ARTIGO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Revisao r = new Revisao();
@@ -267,7 +305,7 @@ namespace ConferenceManager
         public void RegisterRevision()
         {
             Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <DATA REVISÃO> <NOTA MÍNIMA> <NOTA> <TEXTO> <ID ARTIGO> <EMAIL REVISOR> <nome CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("PREENCHA OS CAMPOS: <DATA REVISÃO> <NOTA MÍNIMA> <NOTA> <TEXTO> <ID ARTIGO> <EMAIL REVISOR> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Revisao r = new Revisao();
@@ -307,7 +345,7 @@ namespace ConferenceManager
         public void CalcAcceptedSubmissionsRatio()
         {
             Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <nome CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("PREENCHA OS CAMPOS: <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Conferencia c = new Conferencia();
