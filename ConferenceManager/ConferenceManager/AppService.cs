@@ -42,9 +42,14 @@ namespace ConferenceManager
 
                     cm.ExecUpdateRevisionLimitDate(ctx, c);
 
-                    c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
+                    // c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
+                    // if (c != null) Console.WriteLine("DATA LIMITE DE REVISAO: " + c.DataLimiteRevisao);
 
-                    if (c != null) Console.WriteLine("DATA LIMITE DE REVISAO: " + c.DataLimiteRevisao);
+                    foreach (var conf in ctx.Conferencias.Find(rev => ((rev.DataLimiteRevisao == parameters[0]) && (rev.Nome == parameters[1]) && (rev.AnoRealizacao == Int32.Parse(parameters[2])))))
+                    {
+                        Console.WriteLine("DATA LIMITE DE REVISÃO: " + conf.DataLimiteRevisao);
+                    }
+                    
                     Console.WriteLine();
                     Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
                 }
@@ -77,9 +82,14 @@ namespace ConferenceManager
 
                     cm.ExecUpdateSubmissionLimitDate(ctx, c);
 
-                    c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
+                    // c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
+                    // if (c != null) Console.WriteLine("DATA LIMITE DE SUBMISSÃO: " + c.DataLimiteSubmissao);
 
-                    if (c != null) Console.WriteLine("DATA LIMITE DE SUBMISSÃO: " + c.DataLimiteSubmissao);
+                    foreach (var conf in ctx.Conferencias.Find(rev => ((rev.DataLimiteSubmissao == parameters[0]) && (rev.Nome == parameters[1]) && (rev.AnoRealizacao == Int32.Parse(parameters[2])))))
+                    {
+                        Console.WriteLine("DATA LIMITE DE SUBMISSÃO: " + conf.DataLimiteSubmissao);
+                    }
+
                     Console.WriteLine();
                     Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
                 }
@@ -109,9 +119,14 @@ namespace ConferenceManager
 
                 cm.ExecUpdatePresident(ctx, c);
 
-                c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
+                // c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
+                // if (c != null) Console.WriteLine("PRESIDENTE: " + c.EmailPresidente);
 
-                if (c != null) Console.WriteLine("PRESIDENTE: " + c.EmailPresidente);
+                foreach (var conf in ctx.Conferencias.Find(rev => ((rev.EmailPresidente == parameters[0]) && (rev.Nome == parameters[1]) && (rev.AnoRealizacao == Int32.Parse(parameters[2])))))
+                {
+                    Console.WriteLine("PRESIDENTE: " + conf.EmailPresidente);
+                }
+
                 Console.WriteLine();
                 Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
             }
@@ -148,9 +163,14 @@ namespace ConferenceManager
 
                 sm.ExecNewAuthor(ctx, s);
 
-                s = sm.Read(new Tuple<int, string, string, int>(s.IDArtigo, s.EmailAutor, s.NomeConferencia, s.AnoConferencia));
+                // s = sm.Read(new Tuple<int, string, string, int>(s.IDArtigo, s.EmailAutor, s.NomeConferencia, s.AnoConferencia));
+                // if (s != null) Console.WriteLine("NOVO AUTOR: " + s.EmailAutor);
 
-                if (s != null) Console.WriteLine("NOVO AUTOR: " + s.EmailAutor);
+                foreach (var autor in ctx.Submissoes.Find(rev => ((rev.IDArtigo == Int32.Parse(parameters[0])) && (rev.EmailAutor == parameters[1]) && (rev.NomeConferencia == parameters[3]) && (rev.AnoConferencia == Int32.Parse(parameters[4])))))
+                {
+                    Console.WriteLine("NOVO AUTOR: " + autor.EmailAutor);
+                }
+
                 Console.WriteLine();
                 Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
             }
@@ -179,9 +199,14 @@ namespace ConferenceManager
 
                 rm.ExecNewReviser(ctx, r);
 
-                r = rm.Read(new Tuple<int, string, string, int>(r.IDArtigo, r.EmailRevisor, r.NomeConferencia, r.AnoConferencia));
+                // r = rm.Read(new Tuple<int, string, string, int>(r.IDArtigo, r.EmailRevisor, r.NomeConferencia, r.AnoConferencia));
+                // if (r != null) Console.WriteLine("NOVO REVISOR: " + r.EmailRevisor);
 
-                if (r != null) Console.WriteLine("NOVO REVISOR: " + r.EmailRevisor);
+                foreach (var revisor in ctx.Revisoes.Find(rev => ((rev.IDArtigo == Int32.Parse(parameters[0])) && (rev.EmailRevisor == parameters[1]) && (rev.NomeConferencia == parameters[2]) && (rev.AnoConferencia == Int32.Parse(parameters[3])))))
+                {
+                    Console.WriteLine("NOVO REVISOR: " + revisor.EmailRevisor);
+                }
+
                 Console.WriteLine();
                 Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
             }
@@ -209,9 +234,14 @@ namespace ConferenceManager
 
                 cm.ExecAssignPresident(ctx, c);
 
-                c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
+                // c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
+                // if (c != null) Console.WriteLine("PRESIDENTE: " + c.EmailPresidente);
 
-                if (c != null) Console.WriteLine("PRESIDENTE: " + c.EmailPresidente);
+                foreach (var presidente in ctx.Conferencias.Find(rev => ((rev.EmailPresidente == parameters[0]) && (rev.Nome == parameters[1]) && (rev.AnoRealizacao == Int32.Parse(parameters[2])))))
+                {
+                    Console.WriteLine("NOVO PRESIDENTE: " + presidente.EmailPresidente);
+                }
+
                 Console.WriteLine();
                 Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
             }
@@ -233,7 +263,6 @@ namespace ConferenceManager
                 a.AnoConferencia = Int32.Parse(parameters[2]);
 
                 Console.WriteLine();
-                Console.WriteLine("LISTA DE REVISORES COMPATÍVEIS:");
                 am.ExecListCompatibleRevisers(ctx, a);
                 Console.WriteLine();
                 Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
@@ -262,10 +291,15 @@ namespace ConferenceManager
                 r.AnoConferencia = Int32.Parse(parameters[3]);
 
                 rm.ExecAssignReviser(ctx, r);
-                //ctx.Revisoes.Find()
-                r = rm.Read(new Tuple<int, string, string, int>(r.IDArtigo, r.EmailRevisor, r.NomeConferencia, r.AnoConferencia));
 
-                if (r != null) Console.WriteLine("REVISOR: " + r.EmailRevisor);
+                // r = rm.Read(new Tuple<int, string, string, int>(r.IDArtigo, r.EmailRevisor, r.NomeConferencia, r.AnoConferencia));
+                // if (r != null) Console.WriteLine("REVISOR: " + r.EmailRevisor);
+
+                foreach (var revisor in ctx.Revisoes.Find(rev => ((rev.EmailRevisor == parameters[0]) && (rev.IDArtigo == Int32.Parse(parameters[1])) && (rev.NomeConferencia == parameters[2]) && (rev.AnoConferencia == Int32.Parse(parameters[3])))))
+                {
+                    Console.WriteLine("REVISOR: " + revisor.EmailRevisor);
+                }
+
                 Console.WriteLine();
                 Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
             }
@@ -302,16 +336,31 @@ namespace ConferenceManager
 
                     rm.ExecRegisterRevision(ctx, parameters[0], r);
 
-                    r = rm.Read(new Tuple<int, string, string, int>(r.IDArtigo, r.EmailRevisor, r.NomeConferencia, r.AnoConferencia));
-                    if (r != null)
+                    // r = rm.Read(new Tuple<int, string, string, int>(r.IDArtigo, r.EmailRevisor, r.NomeConferencia, r.AnoConferencia));
+                    // if (r != null)
+                    // {
+                    // a = am.Read(new Tuple<int, string, int>(r.IDArtigo, r.NomeConferencia, r.AnoConferencia));
+                    // if (a != null)
+                    // {
+                    // Console.WriteLine("REVISAO: " + r.NotaMinima + " " + r.Nota + " " + r.Texto + " " + r.IDArtigo + " " + r.EmailRevisor + " " + r.NomeConferencia + " " + r.AnoConferencia + " " + r.EmailRevisor + "\n");
+                    // Console.WriteLine("NOVO ESTADO DE ARTIGO: " + a.Estado);
+                    // }
+                    // }
+
+                    foreach (var revisao in ctx.Revisoes.Find(rev => ((rev.IDArtigo == Int32.Parse(parameters[4])) && (rev.EmailRevisor == parameters[5]) && (rev.NomeConferencia == parameters[6]) && (rev.AnoConferencia == Int32.Parse(parameters[7])))))
                     {
-                        a = am.Read(new Tuple<int, string, int>(r.IDArtigo, r.NomeConferencia, r.AnoConferencia));
-                        if (a != null)
-                        {
-                            Console.WriteLine("REVISAO: " + r.NotaMinima + " " + r.Nota + " " + r.Texto + " " + r.IDArtigo + " " + r.EmailRevisor + " " + r.NomeConferencia + " " + r.AnoConferencia + " " + r.EmailRevisor + "\n");
-                            Console.WriteLine("NOVO ESTADO DE ARTIGO: " + a.Estado);
+                        if(revisao != null) {
+                            foreach (var artigo in ctx.Artigos.Find(rev => ((rev.Identificador == Int32.Parse(parameters[4])) && (rev.NomeConferencia == parameters[6]) && (rev.AnoConferencia == Int32.Parse(parameters[7])))))
+                            {
+                                if(artigo != null)
+                                {
+                                    Console.WriteLine("REVISAO: " + revisao.NotaMinima + " " + revisao.Nota + " " + revisao.Texto + " " + revisao.IDArtigo + " " + revisao.EmailRevisor + " " + revisao.NomeConferencia + " " + revisao.AnoConferencia + " " + revisao.EmailRevisor + "\n");
+                                    Console.WriteLine("NOVO ESTADO DE ARTIGO: " + artigo.Estado);
+                                }
+                            }
                         }
                     }
+
                     Console.WriteLine();
                     Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
                 }

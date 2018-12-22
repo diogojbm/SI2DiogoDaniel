@@ -234,6 +234,7 @@ namespace ConferenceManager.Concrete
                         cmd.CommandType = CommandType.StoredProcedure;
                         ListCompatibleRevisersParameters(cmd, a);
                         SqlDataReader dr = cmd.ExecuteReader();
+                        Console.WriteLine("LISTA DE REVISORES COMPATÍVEIS:");
                         while (dr.Read())
                             Console.WriteLine(dr[0].ToString());
 

@@ -191,7 +191,6 @@ namespace ConferenceManager
 
     class Program
     {   /*
-        - H) O resultado é um select a uma tabela temporária. Como é que uso mapeamento para retornar a tabela?
         - L) Falta só fazer. Neste é para fazer um Read e a cada lido aplicar a condição que faz mudar o seu estado
         */
         static void Main(string[] args)
