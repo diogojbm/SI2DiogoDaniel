@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Entity;
+using System.Data.EntityClient;
 using System.Linq;
 using System.Transactions;
 
@@ -38,27 +40,27 @@ namespace ConferenceManager
                 {
                     using (var ts = new TransactionScope())
                     {
-                        try
+                        using (EntityConnection cn = new EntityConnection("name = ConferênciaAcadémicaEntities"))
                         {
-                            using (var ctx = new ConferênciaAcadémicaEntities())
+                            try
                             {
-                                string nomeConferencia = parameters[1];
-                                int anoConferencia = Int32.Parse(parameters[2]);
-                                Conferencia ic = ctx.Conferencias.Where(conf => conf.nome == nomeConferencia && conf.anoRealizacao == anoConferencia).SingleOrDefault();
-                                Console.WriteLine(c.dataLimiteRevisao.ToString("yyyyMMdd"));
-                                Console.WriteLine();
-                                /*if (c != null)
+                                using (var ctx = new ConferênciaAcadémicaEntities())
                                 {
+                                    string nomeConferencia = parameters[1];
+                                    int anoConferencia = Int32.Parse(parameters[2]);
                                     ctx.AtualizarConferenciaDataLimiteRevisao(date, nomeConferencia, anoConferencia);
-                                    Console.WriteLine("DATA LIMITE DE REVISAO: " + c.dataLimiteRevisao.ToString());
+                                    Conferencia ic = ctx.Conferencias.Where(conf => conf.nome == nomeConferencia && conf.anoRealizacao == anoConferencia).SingleOrDefault();
+                                    ctx.Entry(ic).State = EntityState.Modified;
+                                    ctx.SaveChanges();
+                                    Console.WriteLine("DATA LIMITE DE REVISAO: " + ic.dataLimiteRevisao.ToString());
+                                    //DbRawSqlQuery sqlq = ctx.Database.SqlQuery<Conferencia>("SELECT * FROM Conferencia");
+                                    //c = cm.Read(new Tuple<string, int>(c.nome, c.anoRealizacao));*/
                                 }
-                                //ctx.Database.SQLQuery<Conferencia>("SELECT * FROM Conferencia");
-                                //c = cm.Read(new Tuple<string, int>(c.nome, c.anoRealizacao));*/
                             }
-                        }
-                        catch (Exception e)
-                        {
-                            Console.WriteLine(e.Message);
+                            catch (Exception e)
+                            {
+                                Console.WriteLine(e.Message);
+                            }
                         }
                     }
                     Console.WriteLine();
