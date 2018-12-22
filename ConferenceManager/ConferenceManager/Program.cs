@@ -103,7 +103,7 @@ namespace ConferenceManager
             }
             else if (op == "3")
             {
-                service.AssignPresident();
+                service.AssignPresidentRole();
             }
         }
 

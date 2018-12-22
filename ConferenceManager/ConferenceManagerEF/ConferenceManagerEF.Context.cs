@@ -15,10 +15,10 @@ namespace ConferenceManagerEF
     using System.Data.Entity.Core.Objects;
     using System.Linq;
     
-    public partial class ConferênciaAcadémicaEntities : DbContext
+    public partial class ConferenceManagerEntities : DbContext
     {
-        public ConferênciaAcadémicaEntities()
-            : base("name=ConferênciaAcadémicaEntities")
+        public ConferenceManagerEntities()
+            : base("name=ConferenceManagerEntities")
         {
         }
     
@@ -36,11 +36,11 @@ namespace ConferenceManagerEF
         public virtual DbSet<Submissao> Submissaos { get; set; }
         public virtual DbSet<Utilizador> Utilizadors { get; set; }
     
-        public virtual int AtribuirPapelAutor(string idArtigo, string email, Nullable<bool> responsavel, string nomeConferencia, Nullable<int> anoConferencia)
+        public virtual int AtribuirPapelAutor(Nullable<int> idArtigo, string email, Nullable<bool> responsavel, string nomeConferencia, Nullable<int> anoConferencia)
         {
-            var idArtigoParameter = idArtigo != null ?
+            var idArtigoParameter = idArtigo.HasValue ?
                 new ObjectParameter("idArtigo", idArtigo) :
-                new ObjectParameter("idArtigo", typeof(string));
+                new ObjectParameter("idArtigo", typeof(int));
     
             var emailParameter = email != null ?
                 new ObjectParameter("email", email) :
@@ -267,7 +267,7 @@ namespace ConferenceManagerEF
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("InserirUtilizador", emailParameter, nomeParameter, nomeInstituicaoParameter, dataRegistoParameter, nomeConferenciaParameter, anoConferenciaParameter);
         }
     
-        public virtual int ListarRevisores(Nullable<int> idArtigo, string nomeConferencia, Nullable<int> anoConferencia)
+        public virtual ObjectResult<string> ListarRevisores(Nullable<int> idArtigo, string nomeConferencia, Nullable<int> anoConferencia)
         {
             var idArtigoParameter = idArtigo.HasValue ?
                 new ObjectParameter("idArtigo", idArtigo) :
@@ -281,7 +281,7 @@ namespace ConferenceManagerEF
                 new ObjectParameter("anoConferencia", anoConferencia) :
                 new ObjectParameter("anoConferencia", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("ListarRevisores", idArtigoParameter, nomeConferenciaParameter, anoConferenciaParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<string>("ListarRevisores", idArtigoParameter, nomeConferenciaParameter, anoConferenciaParameter);
         }
     
         public virtual int RegistarRevisao(Nullable<System.DateTime> dataRevisao, Nullable<int> notaMinima, Nullable<int> nota, string texto, Nullable<int> idArtigo, string emailRevisor, string nomeConferencia, Nullable<int> anoConferencia)

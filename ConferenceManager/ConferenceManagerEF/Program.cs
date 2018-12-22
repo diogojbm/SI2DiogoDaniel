@@ -47,7 +47,7 @@ namespace ConferenceManager
             }
             private set { }
         }
-        
+
         private delegate void MainMenuOptions();
         private System.Collections.Generic.Dictionary<Function, MainMenuOptions> mainOptions;
 
@@ -103,7 +103,7 @@ namespace ConferenceManager
             }
             else if (op == "3")
             {
-                service.AssignPresident();
+                service.AssignPresidentRole();
             }
         }
 

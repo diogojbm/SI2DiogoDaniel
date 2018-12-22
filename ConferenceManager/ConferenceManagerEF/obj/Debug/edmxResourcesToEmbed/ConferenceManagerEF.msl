@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-  <EntityContainerMapping StorageEntityContainer="ConferênciaAcadémicaModelStoreContainer" CdmEntityContainer="ConferênciaAcadémicaEntities">
+  <EntityContainerMapping StorageEntityContainer="ConferenceManagerEFModelStoreContainer" CdmEntityContainer="ConferenceManagerEntities">
     <EntitySetMapping Name="Artigoes">
-      <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Artigo">
+      <EntityTypeMapping TypeName="ConferenceManagerEFModel.Artigo">
         <MappingFragment StoreEntitySet="Artigo">
           <ScalarProperty Name="identificador" ColumnName="identificador" />
           <ScalarProperty Name="resumo" ColumnName="resumo" />
@@ -14,7 +14,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Conferencias">
-      <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Conferencia">
+      <EntityTypeMapping TypeName="ConferenceManagerEFModel.Conferencia">
         <MappingFragment StoreEntitySet="Conferencia">
           <ScalarProperty Name="nome" ColumnName="nome" />
           <ScalarProperty Name="anoRealizacao" ColumnName="anoRealizacao" />
@@ -26,7 +26,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Ficheiroes">
-      <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Ficheiro">
+      <EntityTypeMapping TypeName="ConferenceManagerEFModel.Ficheiro">
         <MappingFragment StoreEntitySet="Ficheiro">
           <ScalarProperty Name="nome" ColumnName="nome" />
           <ScalarProperty Name="idArtigo" ColumnName="idArtigo" />
@@ -36,7 +36,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Inscricaos">
-      <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Inscricao">
+      <EntityTypeMapping TypeName="ConferenceManagerEFModel.Inscricao">
         <MappingFragment StoreEntitySet="Inscricao">
           <ScalarProperty Name="dataRegisto" ColumnName="dataRegisto" />
           <ScalarProperty Name="nomeConferencia" ColumnName="nomeConferencia" />
@@ -46,7 +46,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Instituicaos">
-      <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Instituicao">
+      <EntityTypeMapping TypeName="ConferenceManagerEFModel.Instituicao">
         <MappingFragment StoreEntitySet="Instituicao">
           <ScalarProperty Name="nome" ColumnName="nome" />
           <ScalarProperty Name="morada" ColumnName="morada" />
@@ -55,7 +55,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Revisaos">
-      <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Revisao">
+      <EntityTypeMapping TypeName="ConferenceManagerEFModel.Revisao">
         <MappingFragment StoreEntitySet="Revisao">
           <ScalarProperty Name="notaMinima" ColumnName="notaMinima" />
           <ScalarProperty Name="nota" ColumnName="nota" />
@@ -68,7 +68,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Submissaos">
-      <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Submissao">
+      <EntityTypeMapping TypeName="ConferenceManagerEFModel.Submissao">
         <MappingFragment StoreEntitySet="Submissao">
           <ScalarProperty Name="idArtigo" ColumnName="idArtigo" />
           <ScalarProperty Name="emailAutor" ColumnName="emailAutor" />
@@ -79,7 +79,7 @@
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="Utilizadors">
-      <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Utilizador">
+      <EntityTypeMapping TypeName="ConferenceManagerEFModel.Utilizador">
         <MappingFragment StoreEntitySet="Utilizador">
           <ScalarProperty Name="email" ColumnName="email" />
           <ScalarProperty Name="nome" ColumnName="nome" />
@@ -87,20 +87,20 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <FunctionImportMapping FunctionImportName="AtribuirPapelAutor" FunctionName="ConferênciaAcadémicaModel.Store.AtribuirPapelAutor" />
-    <FunctionImportMapping FunctionImportName="AtribuirPapelPresidente" FunctionName="ConferênciaAcadémicaModel.Store.AtribuirPapelPresidente" />
-    <FunctionImportMapping FunctionImportName="AtribuirPapelRevisor" FunctionName="ConferênciaAcadémicaModel.Store.AtribuirPapelRevisor" />
-    <FunctionImportMapping FunctionImportName="AtribuirRevisor" FunctionName="ConferênciaAcadémicaModel.Store.AtribuirRevisor" />
-    <FunctionImportMapping FunctionImportName="AtualizarConferenciaDataLimiteRevisao" FunctionName="ConferênciaAcadémicaModel.Store.AtualizarConferenciaDataLimiteRevisao" />
-    <FunctionImportMapping FunctionImportName="AtualizarConferenciaDataLimiteSubmissao" FunctionName="ConferênciaAcadémicaModel.Store.AtualizarConferenciaDataLimiteSubmissao" />
-    <FunctionImportMapping FunctionImportName="AtualizarConferenciaPresidente" FunctionName="ConferênciaAcadémicaModel.Store.AtualizarConferenciaPresidente" />
-    <FunctionImportMapping FunctionImportName="AtualizarEstado" FunctionName="ConferênciaAcadémicaModel.Store.AtualizarEstado" />
-    <FunctionImportMapping FunctionImportName="AtualizarUtilizador" FunctionName="ConferênciaAcadémicaModel.Store.AtualizarUtilizador" />
-    <FunctionImportMapping FunctionImportName="InserirArtigo" FunctionName="ConferênciaAcadémicaModel.Store.InserirArtigo" />
-    <FunctionImportMapping FunctionImportName="InserirUtilizador" FunctionName="ConferênciaAcadémicaModel.Store.InserirUtilizador" />
-    <FunctionImportMapping FunctionImportName="ListarRevisores" FunctionName="ConferênciaAcadémicaModel.Store.ListarRevisores" />
-    <FunctionImportMapping FunctionImportName="RegistarRevisao" FunctionName="ConferênciaAcadémicaModel.Store.RegistarRevisao" />
-    <FunctionImportMapping FunctionImportName="RemoverArtigo" FunctionName="ConferênciaAcadémicaModel.Store.RemoverArtigo" />
-    <FunctionImportMapping FunctionImportName="RemoverUtilizador" FunctionName="ConferênciaAcadémicaModel.Store.RemoverUtilizador" />
+    <FunctionImportMapping FunctionImportName="AtribuirPapelAutor" FunctionName="ConferenceManagerEFModel.Store.AtribuirPapelAutor" />
+    <FunctionImportMapping FunctionImportName="AtribuirPapelPresidente" FunctionName="ConferenceManagerEFModel.Store.AtribuirPapelPresidente" />
+    <FunctionImportMapping FunctionImportName="AtribuirPapelRevisor" FunctionName="ConferenceManagerEFModel.Store.AtribuirPapelRevisor" />
+    <FunctionImportMapping FunctionImportName="AtribuirRevisor" FunctionName="ConferenceManagerEFModel.Store.AtribuirRevisor" />
+    <FunctionImportMapping FunctionImportName="AtualizarConferenciaDataLimiteRevisao" FunctionName="ConferenceManagerEFModel.Store.AtualizarConferenciaDataLimiteRevisao" />
+    <FunctionImportMapping FunctionImportName="AtualizarConferenciaDataLimiteSubmissao" FunctionName="ConferenceManagerEFModel.Store.AtualizarConferenciaDataLimiteSubmissao" />
+    <FunctionImportMapping FunctionImportName="AtualizarConferenciaPresidente" FunctionName="ConferenceManagerEFModel.Store.AtualizarConferenciaPresidente" />
+    <FunctionImportMapping FunctionImportName="AtualizarEstado" FunctionName="ConferenceManagerEFModel.Store.AtualizarEstado" />
+    <FunctionImportMapping FunctionImportName="AtualizarUtilizador" FunctionName="ConferenceManagerEFModel.Store.AtualizarUtilizador" />
+    <FunctionImportMapping FunctionImportName="InserirArtigo" FunctionName="ConferenceManagerEFModel.Store.InserirArtigo" />
+    <FunctionImportMapping FunctionImportName="InserirUtilizador" FunctionName="ConferenceManagerEFModel.Store.InserirUtilizador" />
+    <FunctionImportMapping FunctionImportName="ListarRevisores" FunctionName="ConferenceManagerEFModel.Store.ListarRevisores" />
+    <FunctionImportMapping FunctionImportName="RegistarRevisao" FunctionName="ConferenceManagerEFModel.Store.RegistarRevisao" />
+    <FunctionImportMapping FunctionImportName="RemoverArtigo" FunctionName="ConferenceManagerEFModel.Store.RemoverArtigo" />
+    <FunctionImportMapping FunctionImportName="RemoverUtilizador" FunctionName="ConferenceManagerEFModel.Store.RemoverUtilizador" />
   </EntityContainerMapping>
 </Mapping>

@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="ConferênciaAcadémicaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ConferenceManagerEFModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Artigo">
           <Key>
             <PropertyRef Name="identificador" />
@@ -234,7 +234,7 @@
           </ReferentialConstraint>
         </Association>
         <Function Name="AtribuirPapelAutor" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="ConferênciaAcadémica">
-          <Parameter Name="idArtigo" Type="varchar" Mode="In" />
+          <Parameter Name="idArtigo" Type="int" Mode="In" />
           <Parameter Name="email" Type="varchar" Mode="In" />
           <Parameter Name="responsavel" Type="bit" Mode="In" />
           <Parameter Name="nomeConferencia" Type="varchar" Mode="In" />
@@ -333,7 +333,7 @@
           <Parameter Name="anoConferencia" Type="int" Mode="In" />
           <Parameter Name="idArtigo" Type="int" Mode="In" />
         </Function>
-        <EntityContainer Name="ConferênciaAcadémicaModelStoreContainer">
+        <EntityContainer Name="ConferenceManagerEFModelStoreContainer">
           <EntitySet Name="Artigo" EntityType="Self.Artigo" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Conferencia" EntityType="Self.Conferencia" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Ficheiro" EntityType="Self.Ficheiro" Schema="dbo" store:Type="Tables" />
@@ -387,7 +387,7 @@
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="ConferênciaAcadémicaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="ConferenceManagerEFModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Artigo">
           <Key>
             <PropertyRef Name="identificador" />
@@ -636,7 +636,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ConferênciaAcadémicaEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="ConferenceManagerEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Artigoes" EntityType="Self.Artigo" />
           <EntitySet Name="Conferencias" EntityType="Self.Conferencia" />
           <EntitySet Name="Ficheiroes" EntityType="Self.Ficheiro" />
@@ -686,7 +686,7 @@
             <End Role="Submissao" EntitySet="Submissaos" />
           </AssociationSet>
           <FunctionImport Name="AtribuirPapelAutor">
-            <Parameter Name="idArtigo" Mode="In" Type="String" />
+            <Parameter Name="idArtigo" Mode="In" Type="Int32" />
             <Parameter Name="email" Mode="In" Type="String" />
             <Parameter Name="responsavel" Mode="In" Type="Boolean" />
             <Parameter Name="nomeConferencia" Mode="In" Type="String" />
@@ -751,7 +751,7 @@
             <Parameter Name="nomeConferencia" Mode="In" Type="String" />
             <Parameter Name="anoConferencia" Mode="In" Type="Int32" />
           </FunctionImport>
-          <FunctionImport Name="ListarRevisores">
+          <FunctionImport Name="ListarRevisores" ReturnType="Collection(String)">
             <Parameter Name="idArtigo" Mode="In" Type="Int32" />
             <Parameter Name="nomeConferencia" Mode="In" Type="String" />
             <Parameter Name="anoConferencia" Mode="In" Type="Int32" />
@@ -781,9 +781,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ConferênciaAcadémicaModelStoreContainer" CdmEntityContainer="ConferênciaAcadémicaEntities">
+        <EntityContainerMapping StorageEntityContainer="ConferenceManagerEFModelStoreContainer" CdmEntityContainer="ConferenceManagerEntities">
           <EntitySetMapping Name="Artigoes">
-            <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Artigo">
+            <EntityTypeMapping TypeName="ConferenceManagerEFModel.Artigo">
               <MappingFragment StoreEntitySet="Artigo">
                 <ScalarProperty Name="identificador" ColumnName="identificador" />
                 <ScalarProperty Name="resumo" ColumnName="resumo" />
@@ -795,7 +795,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Conferencias">
-            <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Conferencia">
+            <EntityTypeMapping TypeName="ConferenceManagerEFModel.Conferencia">
               <MappingFragment StoreEntitySet="Conferencia">
                 <ScalarProperty Name="nome" ColumnName="nome" />
                 <ScalarProperty Name="anoRealizacao" ColumnName="anoRealizacao" />
@@ -807,7 +807,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Ficheiroes">
-            <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Ficheiro">
+            <EntityTypeMapping TypeName="ConferenceManagerEFModel.Ficheiro">
               <MappingFragment StoreEntitySet="Ficheiro">
                 <ScalarProperty Name="nome" ColumnName="nome" />
                 <ScalarProperty Name="idArtigo" ColumnName="idArtigo" />
@@ -817,7 +817,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Inscricaos">
-            <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Inscricao">
+            <EntityTypeMapping TypeName="ConferenceManagerEFModel.Inscricao">
               <MappingFragment StoreEntitySet="Inscricao">
                 <ScalarProperty Name="dataRegisto" ColumnName="dataRegisto" />
                 <ScalarProperty Name="nomeConferencia" ColumnName="nomeConferencia" />
@@ -827,7 +827,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Instituicaos">
-            <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Instituicao">
+            <EntityTypeMapping TypeName="ConferenceManagerEFModel.Instituicao">
               <MappingFragment StoreEntitySet="Instituicao">
                 <ScalarProperty Name="nome" ColumnName="nome" />
                 <ScalarProperty Name="morada" ColumnName="morada" />
@@ -836,7 +836,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Revisaos">
-            <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Revisao">
+            <EntityTypeMapping TypeName="ConferenceManagerEFModel.Revisao">
               <MappingFragment StoreEntitySet="Revisao">
                 <ScalarProperty Name="notaMinima" ColumnName="notaMinima" />
                 <ScalarProperty Name="nota" ColumnName="nota" />
@@ -849,7 +849,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Submissaos">
-            <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Submissao">
+            <EntityTypeMapping TypeName="ConferenceManagerEFModel.Submissao">
               <MappingFragment StoreEntitySet="Submissao">
                 <ScalarProperty Name="idArtigo" ColumnName="idArtigo" />
                 <ScalarProperty Name="emailAutor" ColumnName="emailAutor" />
@@ -860,7 +860,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Utilizadors">
-            <EntityTypeMapping TypeName="ConferênciaAcadémicaModel.Utilizador">
+            <EntityTypeMapping TypeName="ConferenceManagerEFModel.Utilizador">
               <MappingFragment StoreEntitySet="Utilizador">
                 <ScalarProperty Name="email" ColumnName="email" />
                 <ScalarProperty Name="nome" ColumnName="nome" />
@@ -868,21 +868,21 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="AtribuirPapelAutor" FunctionName="ConferênciaAcadémicaModel.Store.AtribuirPapelAutor" />
-          <FunctionImportMapping FunctionImportName="AtribuirPapelPresidente" FunctionName="ConferênciaAcadémicaModel.Store.AtribuirPapelPresidente" />
-          <FunctionImportMapping FunctionImportName="AtribuirPapelRevisor" FunctionName="ConferênciaAcadémicaModel.Store.AtribuirPapelRevisor" />
-          <FunctionImportMapping FunctionImportName="AtribuirRevisor" FunctionName="ConferênciaAcadémicaModel.Store.AtribuirRevisor" />
-          <FunctionImportMapping FunctionImportName="AtualizarConferenciaDataLimiteRevisao" FunctionName="ConferênciaAcadémicaModel.Store.AtualizarConferenciaDataLimiteRevisao" />
-          <FunctionImportMapping FunctionImportName="AtualizarConferenciaDataLimiteSubmissao" FunctionName="ConferênciaAcadémicaModel.Store.AtualizarConferenciaDataLimiteSubmissao" />
-          <FunctionImportMapping FunctionImportName="AtualizarConferenciaPresidente" FunctionName="ConferênciaAcadémicaModel.Store.AtualizarConferenciaPresidente" />
-          <FunctionImportMapping FunctionImportName="AtualizarEstado" FunctionName="ConferênciaAcadémicaModel.Store.AtualizarEstado" />
-          <FunctionImportMapping FunctionImportName="AtualizarUtilizador" FunctionName="ConferênciaAcadémicaModel.Store.AtualizarUtilizador" />
-          <FunctionImportMapping FunctionImportName="InserirArtigo" FunctionName="ConferênciaAcadémicaModel.Store.InserirArtigo" />
-          <FunctionImportMapping FunctionImportName="InserirUtilizador" FunctionName="ConferênciaAcadémicaModel.Store.InserirUtilizador" />
-          <FunctionImportMapping FunctionImportName="ListarRevisores" FunctionName="ConferênciaAcadémicaModel.Store.ListarRevisores" />
-          <FunctionImportMapping FunctionImportName="RegistarRevisao" FunctionName="ConferênciaAcadémicaModel.Store.RegistarRevisao" />
-          <FunctionImportMapping FunctionImportName="RemoverArtigo" FunctionName="ConferênciaAcadémicaModel.Store.RemoverArtigo" />
-          <FunctionImportMapping FunctionImportName="RemoverUtilizador" FunctionName="ConferênciaAcadémicaModel.Store.RemoverUtilizador" />
+          <FunctionImportMapping FunctionImportName="AtribuirPapelAutor" FunctionName="ConferenceManagerEFModel.Store.AtribuirPapelAutor" />
+          <FunctionImportMapping FunctionImportName="AtribuirPapelPresidente" FunctionName="ConferenceManagerEFModel.Store.AtribuirPapelPresidente" />
+          <FunctionImportMapping FunctionImportName="AtribuirPapelRevisor" FunctionName="ConferenceManagerEFModel.Store.AtribuirPapelRevisor" />
+          <FunctionImportMapping FunctionImportName="AtribuirRevisor" FunctionName="ConferenceManagerEFModel.Store.AtribuirRevisor" />
+          <FunctionImportMapping FunctionImportName="AtualizarConferenciaDataLimiteRevisao" FunctionName="ConferenceManagerEFModel.Store.AtualizarConferenciaDataLimiteRevisao" />
+          <FunctionImportMapping FunctionImportName="AtualizarConferenciaDataLimiteSubmissao" FunctionName="ConferenceManagerEFModel.Store.AtualizarConferenciaDataLimiteSubmissao" />
+          <FunctionImportMapping FunctionImportName="AtualizarConferenciaPresidente" FunctionName="ConferenceManagerEFModel.Store.AtualizarConferenciaPresidente" />
+          <FunctionImportMapping FunctionImportName="AtualizarEstado" FunctionName="ConferenceManagerEFModel.Store.AtualizarEstado" />
+          <FunctionImportMapping FunctionImportName="AtualizarUtilizador" FunctionName="ConferenceManagerEFModel.Store.AtualizarUtilizador" />
+          <FunctionImportMapping FunctionImportName="InserirArtigo" FunctionName="ConferenceManagerEFModel.Store.InserirArtigo" />
+          <FunctionImportMapping FunctionImportName="InserirUtilizador" FunctionName="ConferenceManagerEFModel.Store.InserirUtilizador" />
+          <FunctionImportMapping FunctionImportName="ListarRevisores" FunctionName="ConferenceManagerEFModel.Store.ListarRevisores" />
+          <FunctionImportMapping FunctionImportName="RegistarRevisao" FunctionName="ConferenceManagerEFModel.Store.RegistarRevisao" />
+          <FunctionImportMapping FunctionImportName="RemoverArtigo" FunctionName="ConferenceManagerEFModel.Store.RemoverArtigo" />
+          <FunctionImportMapping FunctionImportName="RemoverUtilizador" FunctionName="ConferenceManagerEFModel.Store.RemoverUtilizador" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

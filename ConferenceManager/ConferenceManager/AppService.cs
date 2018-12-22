@@ -216,7 +216,7 @@ namespace ConferenceManager
             ctx.Dispose();
         }
 
-        public void AssignPresident()
+        public void AssignPresidentRole()
         {
             ctx.Open();
 

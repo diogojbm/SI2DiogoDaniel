@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CD48BD14-1B74-4891-9200-F89813EB8F70}</ProjectGuid>
+    <ProjectGuid>{60E09C78-00E4-4F40-9B84-43F0A702FB26}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <RootNamespace>ConferenceManagerEF</RootNamespace>
     <AssemblyName>ConferenceManagerEF</AssemblyName>

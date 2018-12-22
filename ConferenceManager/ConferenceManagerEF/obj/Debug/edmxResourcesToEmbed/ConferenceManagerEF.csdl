@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Schema Namespace="ConferênciaAcadémicaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+<Schema Namespace="ConferenceManagerEFModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
   <EntityType Name="Artigo">
     <Key>
       <PropertyRef Name="identificador" />
@@ -248,7 +248,7 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityContainer Name="ConferênciaAcadémicaEntities" annotation:LazyLoadingEnabled="true">
+  <EntityContainer Name="ConferenceManagerEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Artigoes" EntityType="Self.Artigo" />
     <EntitySet Name="Conferencias" EntityType="Self.Conferencia" />
     <EntitySet Name="Ficheiroes" EntityType="Self.Ficheiro" />
@@ -298,7 +298,7 @@
       <End Role="Submissao" EntitySet="Submissaos" />
     </AssociationSet>
     <FunctionImport Name="AtribuirPapelAutor">
-      <Parameter Name="idArtigo" Mode="In" Type="String" />
+      <Parameter Name="idArtigo" Mode="In" Type="Int32" />
       <Parameter Name="email" Mode="In" Type="String" />
       <Parameter Name="responsavel" Mode="In" Type="Boolean" />
       <Parameter Name="nomeConferencia" Mode="In" Type="String" />
@@ -363,7 +363,7 @@
       <Parameter Name="nomeConferencia" Mode="In" Type="String" />
       <Parameter Name="anoConferencia" Mode="In" Type="Int32" />
     </FunctionImport>
-    <FunctionImport Name="ListarRevisores">
+    <FunctionImport Name="ListarRevisores" ReturnType="Collection(String)">
       <Parameter Name="idArtigo" Mode="In" Type="Int32" />
       <Parameter Name="nomeConferencia" Mode="In" Type="String" />
       <Parameter Name="anoConferencia" Mode="In" Type="Int32" />
