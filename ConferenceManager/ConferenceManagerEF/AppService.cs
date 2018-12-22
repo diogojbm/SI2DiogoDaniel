@@ -52,6 +52,7 @@ namespace ConferenceManager
                                     Conferencia ic = ctx.Conferencias.Where(conf => conf.nome == nomeConferencia && conf.anoRealizacao == anoConferencia).SingleOrDefault();
                                     ctx.Entry(ic).State = EntityState.Modified;
                                     ctx.SaveChanges();
+                                    ts.Complete();
                                     Console.WriteLine("DATA LIMITE DE REVISAO: " + ic.dataLimiteRevisao.ToString());
                                     //DbRawSqlQuery sqlq = ctx.Database.SqlQuery<Conferencia>("SELECT * FROM Conferencia");
                                     //c = cm.Read(new Tuple<string, int>(c.nome, c.anoRealizacao));*/
