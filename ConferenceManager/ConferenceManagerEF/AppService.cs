@@ -42,12 +42,18 @@ namespace ConferenceManager
                         {
                             using (var ctx = new ConferênciaAcadémicaEntities())
                             {
-                                string aTuaMaeDe4 = parameters[1];
-                                int aTuaMaeDe69 = Int32.Parse(parameters[2]);
-                                Conferencia ic = ctx.Conferencias.Where(conf => conf.nome == aTuaMaeDe4 && conf.anoRealizacao == aTuaMaeDe69).SingleOrDefault();
-                                Console.WriteLine("" + ic.nome + ic.anoRealizacao + "");
-                                //ctx.AtualizarConferenciaDataLimiteRevisao(date, parameters[1], Int32.Parse(parameters[2]));
-                                //c = cm.Read(new Tuple<string, int>(c.nome, c.anoRealizacao));
+                                string nomeConferencia = parameters[1];
+                                int anoConferencia = Int32.Parse(parameters[2]);
+                                Conferencia ic = ctx.Conferencias.Where(conf => conf.nome == nomeConferencia && conf.anoRealizacao == anoConferencia).SingleOrDefault();
+                                Console.WriteLine(c.dataLimiteRevisao.ToString("yyyyMMdd"));
+                                Console.WriteLine();
+                                /*if (c != null)
+                                {
+                                    ctx.AtualizarConferenciaDataLimiteRevisao(date, nomeConferencia, anoConferencia);
+                                    Console.WriteLine("DATA LIMITE DE REVISAO: " + c.dataLimiteRevisao.ToString());
+                                }
+                                //ctx.Database.SQLQuery<Conferencia>("SELECT * FROM Conferencia");
+                                //c = cm.Read(new Tuple<string, int>(c.nome, c.anoRealizacao));*/
                             }
                         }
                         catch (Exception e)
@@ -55,7 +61,6 @@ namespace ConferenceManager
                             Console.WriteLine(e.Message);
                         }
                     }
-                    if (c != null) Console.WriteLine("DATA LIMITE DE REVISAO: " + c.dataLimiteRevisao);
                     Console.WriteLine();
                     Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
                 }
