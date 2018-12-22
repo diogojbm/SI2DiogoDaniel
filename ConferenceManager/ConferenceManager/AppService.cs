@@ -217,7 +217,6 @@ namespace ConferenceManager
             }
         }
 
-        //TO-DO:
         public void ListRevisers()
         {
             ctx.Open();
@@ -225,33 +224,25 @@ namespace ConferenceManager
             Console.WriteLine();
             Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
             string[] parameters = Console.ReadLine().Split(' ');
-
-        /*
-         using (SqlConnection con = new SqlConnection())
-        {
-            con.ConnectionString = @"Data Source=VLABSIAD;Initial Catalog=ConferênciaAcadémica;Integrated Security=True";
-            con.Open();
-            SqlTransaction transaction = con.BeginTransaction();    // default Isolation Level
-
-            try
+            
+            Artigo a = new Artigo();
+            if (parameters.Length == 3)
             {
-                SqlCommand cmd = con.CreateCommand();
-                cmd.Transaction = transaction;
-                cmd.CommandText = $"EXEC ConferênciaAcadémica.ListarRevisores '{parameters[0]}', '{parameters[1]}', '{parameters[2]}'";
-                SqlDataReader dr = cmd.ExecuteReader();
+                a.Identificador = Int32.Parse(parameters[0]);
+                a.NomeConferencia = parameters[1];
+                a.AnoConferencia = Int32.Parse(parameters[2]);
+
+                Console.WriteLine();
                 Console.WriteLine("LISTA DE REVISORES COMPATÍVEIS:");
-                while (dr.Read()) { Console.WriteLine(dr[0].ToString()); }
-                dr.Close();
-                transaction.Commit();
+                am.ExecListCompatibleRevisers(ctx, a);
+                Console.WriteLine();
+                Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                transaction.Rollback();
-            }
+
+            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+
+            ctx.Dispose();
         }
-        */
-    }
 
         public void AssignReviser()
         {

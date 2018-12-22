@@ -16,3 +16,7 @@ C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager
 C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\bin\Debug\EntityFramework.xml
 C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\bin\Debug\EntityFramework.SqlServer.xml
 C:\Users\diogo\Documents\Faculdade\5oAno\SI2\C#\SI2DiogoDaniel\ConferenceManager\ConferenceManager\obj\Debug\ConferenceManager.csproj.CopyComplete
+C:\Users\siad\Desktop\ConferenceManager\ConferenceManager\bin\Debug\EntityFramework.dll
+C:\Users\siad\Desktop\ConferenceManager\ConferenceManager\bin\Debug\EntityFramework.SqlServer.dll
+C:\Users\siad\Desktop\ConferenceManager\ConferenceManager\bin\Debug\EntityFramework.xml
+C:\Users\siad\Desktop\ConferenceManager\ConferenceManager\bin\Debug\EntityFramework.SqlServer.xml

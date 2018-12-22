@@ -10,6 +10,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace ConferenceManager.Concrete
 {
@@ -205,5 +206,46 @@ namespace ConferenceManager.Concrete
         }
 
         protected override void UpdateParameters(IDbCommand command, Artigo a) => InsertParameters(command, a);
+
+        protected string ListCompatibleRevisersText
+        {
+            get
+            {
+                return "ConferênciaAcadémica.ListarRevisores";
+            }
+        }
+
+        protected void ListCompatibleRevisersParameters(SqlCommand cmd, Artigo a)
+        {
+            cmd.Parameters.Add(new SqlParameter("@idArtigo", a.Identificador));
+            cmd.Parameters.Add(new SqlParameter("@nomeConferencia", a.NomeConferencia));
+            cmd.Parameters.Add(new SqlParameter("@anoConferencia", a.AnoConferencia));
+        }
+
+        public void ExecListCompatibleRevisers(Context ctx, Artigo a)
+        {
+            using (TransactionScope tran = new TransactionScope())
+            {
+                try
+                {
+                    using (SqlCommand cmd = ctx.createCommand())
+                    {
+                        cmd.CommandText = ListCompatibleRevisersText;
+                        cmd.CommandType = CommandType.StoredProcedure;
+                        ListCompatibleRevisersParameters(cmd, a);
+                        SqlDataReader dr = cmd.ExecuteReader();
+                        while (dr.Read())
+                            Console.WriteLine(dr[0].ToString());
+
+                        cmd.Parameters.Clear();
+                        tran.Complete();
+                    }
+                }
+                catch (SqlException exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+            }
+        }
     }
 }
