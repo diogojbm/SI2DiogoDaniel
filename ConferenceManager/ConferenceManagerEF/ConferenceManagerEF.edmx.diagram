@@ -4,25 +4,25 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="93dd7351714c4307bb467f119c06d844" Name="Diagram1">
-        <EntityTypeShape EntityType="ConferenceManagerEFModel.Artigo" Width="1.5" PointX="7.5" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ConferenceManagerEFModel.Conferencia" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ConferenceManagerEFModel.Ficheiro" Width="1.5" PointX="9.75" PointY="6.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ConferenceManagerEFModel.Inscricao" Width="1.5" PointX="10.5" PointY="9.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="ConferenceManagerEFModel.Instituicao" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="ConferenceManagerEFModel.Revisao" Width="1.5" PointX="12.75" PointY="5.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ConferenceManagerEFModel.Submissao" Width="1.5" PointX="9.75" PointY="3" IsExpanded="true" />
-        <EntityTypeShape EntityType="ConferenceManagerEFModel.Utilizador" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
-        <AssociationConnector Association="ConferenceManagerEFModel.FK__Artigo__3F466844" ManuallyRouted="false" />
-        <AssociationConnector Association="ConferenceManagerEFModel.FK__Ficheiro__4222D4EF" ManuallyRouted="false" />
-        <AssociationConnector Association="ConferenceManagerEFModel.FK__Revisao__45F365D3" ManuallyRouted="false" />
-        <AssociationConnector Association="ConferenceManagerEFModel.FK__Submissao__49C3F6B7" ManuallyRouted="false" />
-        <AssociationConnector Association="ConferenceManagerEFModel.FK__Conferenc__email__3C69FB99" ManuallyRouted="false" />
-        <AssociationConnector Association="ConferenceManagerEFModel.FK__Inscricao__4CA06362" ManuallyRouted="false" />
-        <AssociationConnector Association="ConferenceManagerEFModel.FK__Inscricao__email__4D94879B" ManuallyRouted="false" />
-        <AssociationConnector Association="ConferenceManagerEFModel.FK__Utilizado__nomeI__398D8EEE" ManuallyRouted="false" />
-        <AssociationConnector Association="ConferenceManagerEFModel.FK__Revisao__emailRe__44FF419A" ManuallyRouted="false" />
-        <AssociationConnector Association="ConferenceManagerEFModel.FK__Submissao__email__48CFD27E" ManuallyRouted="false" />
+      <Diagram DiagramId="dce112fcfb084b56b25495d7c91375a6" Name="Diagram1">
+        <EntityTypeShape EntityType="ConferênceManagerModel.Artigo" Width="1.5" PointX="7.5" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConferênceManagerModel.Conferencia" Width="1.5" PointX="5.25" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConferênceManagerModel.Ficheiro" Width="1.5" PointX="9.75" PointY="6.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConferênceManagerModel.Inscricao" Width="1.5" PointX="10.5" PointY="9.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConferênceManagerModel.Instituicao" Width="1.5" PointX="0.75" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConferênceManagerModel.Revisao" Width="1.5" PointX="12.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConferênceManagerModel.Submissao" Width="1.5" PointX="9.75" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="ConferênceManagerModel.Utilizador" Width="1.5" PointX="3" PointY="5.875" IsExpanded="true" />
+        <AssociationConnector Association="ConferênceManagerModel.FK__Artigo__3F466844" ManuallyRouted="false" />
+        <AssociationConnector Association="ConferênceManagerModel.FK__Ficheiro__4222D4EF" ManuallyRouted="false" />
+        <AssociationConnector Association="ConferênceManagerModel.FK__Revisao__45F365D3" ManuallyRouted="false" />
+        <AssociationConnector Association="ConferênceManagerModel.FK__Submissao__49C3F6B7" ManuallyRouted="false" />
+        <AssociationConnector Association="ConferênceManagerModel.FK__Conferenc__email__3C69FB99" ManuallyRouted="false" />
+        <AssociationConnector Association="ConferênceManagerModel.FK__Inscricao__4CA06362" ManuallyRouted="false" />
+        <AssociationConnector Association="ConferênceManagerModel.FK__Inscricao__email__4D94879B" ManuallyRouted="false" />
+        <AssociationConnector Association="ConferênceManagerModel.FK__Utilizado__nomeI__398D8EEE" ManuallyRouted="false" />
+        <AssociationConnector Association="ConferênceManagerModel.FK__Revisao__emailRe__44FF419A" ManuallyRouted="false" />
+        <AssociationConnector Association="ConferênceManagerModel.FK__Submissao__email__48CFD27E" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

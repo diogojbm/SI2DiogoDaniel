@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Configuration;
 using System.Data.Entity;
 using System.Data.EntityClient;
+using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Transactions;
 
@@ -12,25 +14,29 @@ namespace ConferenceManager
 {
     class AppService
     {
-        public AppService()
-        {
+        private const string dateFormat = "yyyyMMdd";
+        private const string connectionStringName = "name = ConferenceManagerEntities";
+        private const string invalidNumberOfArgumentsMessage = "INVALID NUMBER OF ARGUMENTS. PRESS ANY KEY TO TRY AGAIN.";
+        private const string pressAnyKeyForANewCommandMessage = "PRESS ANY KEY FOR A NEW COMMAND.";
+        private const string invalidNewDateFormatMessage = "ERROR ON NEW DATE'S FORMAT. THE NEW DATE MUST RESPECT YYYYMMDD FORMAT. PRESS ANY KEY TO START AGAIN.";
+
+        public AppService(){
 
         }
 
         public void UpdateRevisionLimitDate()
         {
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <DATA REVISÃO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <REVISION DATE> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             DateTime date;
             if (parameters.Length == 3)
             {
-                if (DateTime.TryParseExact(parameters[0], "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
+                if (DateTime.TryParseExact(parameters[0], dateFormat, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
                 {
                     using (var ts = new TransactionScope())
                     {
-                        using (EntityConnection cn = new EntityConnection("name = ConferenceManagerEntities"))
+                        using (EntityConnection cn = new EntityConnection(connectionStringName))
                         {
                             try
                             {
@@ -45,39 +51,38 @@ namespace ConferenceManager
                                         ctx.Entry(ic).State = EntityState.Modified;
                                         ctx.SaveChanges();
                                         ts.Complete();
-                                        Console.WriteLine("NOVA DATA LIMITE DE REVISAO: " + ic.dataLimiteRevisao.ToString());
+                                        Console.WriteLine($"NEW REVISION LIMIT DATE: {ic.dataLimiteRevisao.ToString()}");
                                     }
                                 }
                             }
                             catch (Exception e)
                             {
-                                Console.WriteLine(e.Message);
+                                if (e.InnerException != null) Console.WriteLine(e.InnerException.Message);
+                                else Console.WriteLine(e.Message);
                             }
                         }
                     }
-                    Console.WriteLine();
-                    Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                    Console.WriteLine($"\n{pressAnyKeyForANewCommandMessage}\n");
                 }
-                else Console.WriteLine("ERRO NO FORMATO DA NOVA DATA. A NOVA DATA DEVE RESPEITAR 0 FORMATO YYYYMMDD. PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+                else Console.WriteLine($"\n{invalidNewDateFormatMessage}\n");
             }
 
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
         }
 
         public void UpdateSubmissionLimitDate()
         {
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <DATA SUBMISSÃO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <SUBMISSION DATE> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             DateTime date;
             if (parameters.Length == 3)
             {
-                if (DateTime.TryParseExact(parameters[0], "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
+                if (DateTime.TryParseExact(parameters[0], dateFormat, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
                 {
                     using (var ts = new TransactionScope())
                     {
-                        using (EntityConnection cn = new EntityConnection("name = ConferenceManagerEntities"))
+                        using (EntityConnection cn = new EntityConnection(connectionStringName))
                         {
                             try
                             {
@@ -92,36 +97,35 @@ namespace ConferenceManager
                                         ctx.Entry(ic).State = EntityState.Modified;
                                         ctx.SaveChanges();
                                         ts.Complete();
-                                        Console.WriteLine("NOVA DATA LIMITE DE SUBMISSAO: " + ic.dataLimiteSubmissao.ToString());
+                                        Console.WriteLine($"NEW SUBMISSION LIMIT DATE: {ic.dataLimiteSubmissao.ToString()}");
                                     }
                                 }
                             }
                             catch (Exception e)
                             {
-                                Console.WriteLine(e.Message);
+                                if (e.InnerException != null) Console.WriteLine(e.InnerException.Message);
+                                else Console.WriteLine(e.Message);
                             }
                         }
                     }
-                    Console.WriteLine();
-                    Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                    Console.WriteLine($"\n{pressAnyKeyForANewCommandMessage}\n");
                 }
-                else Console.WriteLine("ERRO NO FORMATO DA NOVA DATA. A NOVA DATA DEVE RESPEITAR 0 FORMATO YYYYMMDD. PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+                else Console.WriteLine($"{invalidNewDateFormatMessage}\n");
             }
 
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
         }
 
         public void UpdateConferencePresident()
         {
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <EMAIL PRESIDENTE> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <PRESIDENT EMAIL> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             if (parameters.Length == 3)
             {
                 using (var ts = new TransactionScope())
                 {
-                    using (EntityConnection cn = new EntityConnection("name = ConferenceManagerEntities"))
+                    using (EntityConnection cn = new EntityConnection(connectionStringName))
                     {
                         try
                         {
@@ -137,34 +141,33 @@ namespace ConferenceManager
                                     ctx.Entry(ic).State = EntityState.Modified;
                                     ctx.SaveChanges();
                                     ts.Complete();
-                                    Console.WriteLine("NOVO EMAIL DO PRESIDENTE: " + ic.emailPresidente.ToString());
+                                    Console.WriteLine($"NEW PRESIDENT EMAIL: {ic.emailPresidente.ToString()}");
                                 }
                             }
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.Message);
+                            if (e.InnerException != null) Console.WriteLine(e.InnerException.Message);
+                            else Console.WriteLine(e.Message);
                         }
                     }
                 }
-                Console.WriteLine();
-                Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                Console.WriteLine($"\n{pressAnyKeyForANewCommandMessage}\n");
             }
 
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
         }
 
         public void AssignAuthorRole()
         {
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <EMAIL UTILIZADOR> <RESPONSÁVEL> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <ARTICLE ID> <USER EMAIL> <RESPONSIBLE (0/1)> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             if (parameters.Length == 5)
             {
                 using (var ts = new TransactionScope())
                 {
-                    using (EntityConnection cn = new EntityConnection("name = ConferenceManagerEntities"))
+                    using (EntityConnection cn = new EntityConnection(connectionStringName))
                     {
                         try
                         {
@@ -183,34 +186,32 @@ namespace ConferenceManager
                                     ctx.Entry(subm).State = EntityState.Modified;
                                     ctx.SaveChanges();
                                     ts.Complete();
-                                    Console.WriteLine("NOVO AUTOR: " + subm.emailAutor.ToString());
+                                    Console.WriteLine($"NEW AUTHOR: {subm.emailAutor.ToString()}");
                                 }
                             }
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.Message);
+                            if (e.InnerException != null) Console.WriteLine(e.InnerException.Message);
+                            else Console.WriteLine(e.Message);
                         }
                     }
                 }
-                Console.WriteLine();
-                Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                Console.WriteLine($"\n{pressAnyKeyForANewCommandMessage}\n");
             }
-
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
         }
 
         public void AssignReviserRole()
         {
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <EMAIL UTILIZADOR> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <ARTICLE ID> <USER EMAIL> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             if (parameters.Length == 4)
             {
                 using (var ts = new TransactionScope())
                 {
-                    using (EntityConnection cn = new EntityConnection("name = ConferenceManagerEntities"))
+                    using (EntityConnection cn = new EntityConnection(connectionStringName))
                     {
                         try
                         {
@@ -227,34 +228,32 @@ namespace ConferenceManager
                                     ctx.Entry(rev).State = EntityState.Modified;
                                     ctx.SaveChanges();
                                     ts.Complete();
-                                    Console.WriteLine("NOVO REVISOR: " + rev.emailRevisor.ToString());
+                                    Console.WriteLine($"NEW REVISER: {rev.emailRevisor.ToString()}");
                                 }
                             }
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.Message);
+                            if (e.InnerException != null) Console.WriteLine(e.InnerException.Message);
+                            else Console.WriteLine(e.Message);
                         }
                     }
                 }
-                Console.WriteLine();
-                Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                Console.WriteLine($"{pressAnyKeyForANewCommandMessage}\n");
             }
-
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
         }
 
         public void AssignPresidentRole()
         {
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <EMAIL UTILIZADOR> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <USER EMAIL> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             if (parameters.Length == 3)
             {
                 using (var ts = new TransactionScope())
                 {
-                    using (EntityConnection cn = new EntityConnection("name = ConferenceManagerEntities"))
+                    using (EntityConnection cn = new EntityConnection(connectionStringName))
                     {
                         try
                         {
@@ -270,35 +269,33 @@ namespace ConferenceManager
                                     ctx.Entry(conf).State = EntityState.Modified;
                                     ctx.SaveChanges();
                                     ts.Complete();
-                                    Console.WriteLine("NOVO PRESIDENTE: " + conf.emailPresidente.ToString());
+                                    Console.WriteLine($"NEW PRESIDENT: {conf.emailPresidente.ToString()}");
                                 }
                             }
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.Message);
+                            if (e.InnerException != null) Console.WriteLine(e.InnerException.Message);
+                            else Console.WriteLine(e.Message);
                         }
                     }
                 }
-                Console.WriteLine();
-                Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                Console.WriteLine($"{pressAnyKeyForANewCommandMessage}");
             }
-
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
         }
 
         //TO-DO:
         public void ListRevisers()
         {
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <ARTICLE ID> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             if (parameters.Length == 3)
             {
                 using (var ts = new TransactionScope())
                 {
-                    using (EntityConnection cn = new EntityConnection("name = ConferenceManagerEntities"))
+                    using (EntityConnection cn = new EntityConnection(connectionStringName))
                     {
                         try
                         {
@@ -307,41 +304,38 @@ namespace ConferenceManager
                                 int idArtigo = Int32.Parse(parameters[0]);
                                 string nomeConferencia = parameters[1];
                                 int anoConferencia = Int32.Parse(parameters[2]);
-                                ctx.ListarRevisores(idArtigo, nomeConferencia, anoConferencia);
-                                Conferencia conf = ctx.Conferencias.Find(nomeConferencia, anoConferencia);
-                                if (conf != null)
+                                //var result = ctx.ListarRevisores(idArtigo, nomeConferencia, anoConferencia);
+                                IEnumerable<Utilizador> returnValue = ctx.Database.SqlQuery<Utilizador>("ConferênciaAcadémica.ListarRevisores @idArtigo, @nomeConferencia, @anoConferencia",
+                                                    new SqlParameter("idArtigo", idArtigo),
+                                                    new SqlParameter("nomeConferencia", nomeConferencia),
+                                                    new SqlParameter("anoConferencia", anoConferencia)).AsEnumerable();
+                                foreach (var user in returnValue)
                                 {
-                                    ctx.Entry(conf).State = EntityState.Modified;
-                                    ctx.SaveChanges();
-                                    ts.Complete();
-                                    Console.WriteLine("NOVO PRESIDENTE: " + conf.emailPresidente.ToString());
-                                }
-                            }
+                                    Console.WriteLine("" + user.email);
+                                }                            }
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.Message);
+                            if (e.InnerException != null) Console.WriteLine(e.InnerException.Message);
+                            else Console.WriteLine(e.Message);
                         }
                     }
                 }
-                Console.WriteLine();
-                Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                Console.WriteLine($"{pressAnyKeyForANewCommandMessage}\n");
             }
-
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
         }
 
         public void AssignReviser()
         {
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <EMAIL REVISOR> <ID ARTIGO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <REVISER EMAIL> <ARTICLE ID> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             if (parameters.Length == 4)
             {
                 using (var ts = new TransactionScope())
                 {
-                    using (EntityConnection cn = new EntityConnection("name = ConferenceManagerEntities"))
+                    using (EntityConnection cn = new EntityConnection(connectionStringName))
                     {
                         try
                         {
@@ -358,42 +352,40 @@ namespace ConferenceManager
                                     ctx.Entry(rev).State = EntityState.Modified;
                                     ctx.SaveChanges();
                                     ts.Complete();
-                                    Console.WriteLine("REVISOR: " + rev.emailRevisor.ToString());
+                                    Console.WriteLine($"NEW REVISER: {rev.emailRevisor.ToString()}");
                                 }
                             }
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.Message);
+                            if (e.InnerException != null) Console.WriteLine(e.InnerException.Message);
+                            else Console.WriteLine(e.Message);
                         }
                     }
                 }
-                Console.WriteLine();
-                Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                Console.WriteLine($"\n{pressAnyKeyForANewCommandMessage}\n");
             }
-
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
         }
 
         //A DATA TEM DE SER ALGO COMO 20181112 PORQUE A DATA LIMITE DE REVISAO DA CONFERENCIA B 2018 FOI ALTERADA PARA 20181120
         public void RegisterRevision()
         {
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <DATA REVISÃO> <NOTA MÍNIMA> <NOTA> <TEXTO> <ID ARTIGO> <EMAIL REVISOR> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <REVISION DATE> <MINIMUM GRADE> <GRADE> <TEXT> <ARTICLE ID> <REVISER EMAIL> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             if (parameters.Length == 8)
             {
                 using (var ts = new TransactionScope())
                 {
-                    using (EntityConnection cn = new EntityConnection("name = ConferenceManagerEntities"))
+                    using (EntityConnection cn = new EntityConnection(connectionStringName))
                     {
                         try
                         {
                             using (var ctx = new ConferenceManagerEntities())
                             {
                                 DateTime date;
-                                if (DateTime.TryParseExact(parameters[0], "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
+                                if (DateTime.TryParseExact(parameters[0], dateFormat, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
                                 {
                                     int notaMinima = Int32.Parse(parameters[1]);
                                     int nota = Int32.Parse(parameters[2]);
@@ -403,52 +395,58 @@ namespace ConferenceManager
                                     string nomeConferencia = parameters[6];
                                     int anoConferencia = Int32.Parse(parameters[7]);
                                     ctx.RegistarRevisao(date, notaMinima, nota, texto, idArtigo, emailRevisor, nomeConferencia, anoConferencia);
-                                    Revisao rev = ctx.Revisaos.Find(idArtigo, emailRevisor, nomeConferencia, anoConferencia);
-                                    if (rev != null)
+                                    Revisao revisao = ctx.Revisaos.Find(idArtigo, emailRevisor, nomeConferencia, anoConferencia);
+                                    Artigo artigo = ctx.Artigoes.Find(idArtigo, nomeConferencia, anoConferencia);
+                                    if (revisao != null)
                                     {
-                                        ctx.Entry(rev).State = EntityState.Modified;
+                                        ctx.Entry(revisao).State = EntityState.Modified;
                                         ctx.SaveChanges();
                                         ts.Complete();
-                                        Console.WriteLine("NOVA REVISÃO: \n" + "idArtigo: " + rev.idArtigo + "\nemailRevisor: " + rev.emailRevisor + "\nnomeConferencia: " + rev.nomeConferencia + "\nanoConferencia: " + anoConferencia);
+                                        Console.WriteLine($"NEW REVISION: \nidArtigo: {revisao.idArtigo}\nemailRevisor: {revisao.emailRevisor}\nnomeConferencia: {revisao.nomeConferencia}\nanoConferencia: {anoConferencia}");
+                                        Console.WriteLine($"NEW ARTICLE STATE: {artigo.estado}");
                                     }
                                 }
-                                else Console.WriteLine();
+                                else Console.WriteLine(invalidNewDateFormatMessage);
                             }
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.Message);
+                            if (e.InnerException != null) Console.WriteLine(e.InnerException.Message);
+                            else Console.WriteLine(e.Message);
                         }
                     }
                 }
-                Console.WriteLine();
-                Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                Console.WriteLine($"{pressAnyKeyForANewCommandMessage}\n");
             }
-
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
         }
 
         public void CalcAcceptedSubmissionsRatio()
         {
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
-            if (parameters.Length == 8)
+            if (parameters.Length == 2)
             {
                 using (var ts = new TransactionScope())
                 {
-                    using (EntityConnection cn = new EntityConnection("name = ConferenceManagerEntities"))
+                    using (EntityConnection cn = new EntityConnection(connectionStringName))
                     {
                         try
                         {
                             using (var ctx = new ConferenceManagerEntities())
                             {
-                                
-                                string nome = parameters[0];
-                                int anoRealizacao = Int32.Parse(parameters[1]);
+                                string nomeConferencia = parameters[0];
+                                int anoConferencia = Int32.Parse(parameters[1]);
 
-                                //ctx.
+                                IEnumerable<float> returnValue = ctx.Database.SqlQuery<float>("ConferênciaAcadémica.PercentagemSub @nomeConferencia, @anoConferencia",
+                                                    new SqlParameter("nomeConferencia", nomeConferencia),
+                                                    new SqlParameter("anoConferencia", anoConferencia));
+                                foreach (var percent in returnValue)
+                                {
+                                    Console.WriteLine($"ACCEPTED SUBMISSIONS RATIO: {percent}");
+                                }
+
                                 //Conferencia conf = ctx.Conferencias.Find(nomeConferencia, anoConferencia);
                                 /*if (conf != null)
                                 {
@@ -460,18 +458,17 @@ namespace ConferenceManager
                         }
                         catch (Exception e)
                         {
-                            Console.WriteLine(e.Message);
+                            if (e.InnerException != null) Console.WriteLine(e.InnerException.Message);
+                            else Console.WriteLine(e.Message);
                         }
                     }
                 }
-                Console.WriteLine();
-                Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                Console.WriteLine($"{pressAnyKeyForANewCommandMessage}\n");
             }
-
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
         }
 
         //TO-DO
-        public void ChangeSubmissionState() { }
+        public void ChangeSubmissionState(){ throw new NotImplementedException();}
     }
 }

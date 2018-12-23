@@ -8,11 +8,16 @@ namespace ConferenceManager
 {
     class AppService
     {
+        private const string dateFormat = "yyyyMMdd";
+        private const string invalidNumberOfArgumentsMessage = "INVALID NUMBER OF ARGUMENTS. PRESS ANY KEY TO TRY AGAIN.";
+        private const string pressAnyKeyForANewCommandMessage = "PRESS ANY KEY FOR A NEW COMMAND.";
+        private const string invalidNewDateFormatMessage = "ERROR ON NEW DATE'S FORMAT. THE NEW DATE MUST RESPECT YYYYMMDD FORMAT. PRESS ANY KEY TO START AGAIN.";
         private ConferenciaMapper cm;
         private SubmissaoMapper sm;
         private RevisaoMapper rm;
         private ArtigoMapper am;
         private Context ctx = new Context(ConfigurationManager.ConnectionStrings["cs"].ConnectionString);
+
         public AppService()
         {
             cm = new ConferenciaMapper(ctx);
@@ -25,8 +30,7 @@ namespace ConferenceManager
         {
             ctx.Open();
 
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <DATA REVISÃO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <REVISION DATE> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Conferencia c = new Conferencia();
@@ -34,7 +38,7 @@ namespace ConferenceManager
 
             if (parameters.Length == 3)
             {
-                if (DateTime.TryParseExact(parameters[0], "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
+                if (DateTime.TryParseExact(parameters[0], dateFormat, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
                 {
                     c.DataLimiteRevisao = parameters[0];
                     c.Nome = parameters[1];
@@ -42,21 +46,15 @@ namespace ConferenceManager
 
                     cm.ExecUpdateRevisionLimitDate(ctx, c);
 
-                    // c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
-                    // if (c != null) Console.WriteLine("DATA LIMITE DE REVISAO: " + c.DataLimiteRevisao);
-
                     foreach (var conf in ctx.Conferencias.Find(rev => ((rev.DataLimiteRevisao == parameters[0]) && (rev.Nome == parameters[1]) && (rev.AnoRealizacao == Int32.Parse(parameters[2])))))
                     {
-                        Console.WriteLine("DATA LIMITE DE REVISÃO: " + conf.DataLimiteRevisao);
+                        Console.WriteLine($"NEW REVISION LIMIT DATE: {conf.DataLimiteRevisao}");
                     }
-                    
-                    Console.WriteLine();
-                    Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                    Console.WriteLine($"\n{pressAnyKeyForANewCommandMessage}\n");
                 }
-                else Console.WriteLine("ERRO NO FORMATO DA NOVA DATA. A NOVA DATA DEVE RESPEITAR 0 FORMATO YYYYMMDD. PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+                else Console.WriteLine($"{invalidNewDateFormatMessage}\n");
             }
-
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
 
             ctx.Dispose();
         }
@@ -65,8 +63,7 @@ namespace ConferenceManager
         {
             ctx.Open();
 
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <DATA SUBMISSÃƒO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <SUBMISSION DATE> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Conferencia c = new Conferencia();
@@ -74,7 +71,7 @@ namespace ConferenceManager
 
             if (parameters.Length == 3)
             {
-                if (DateTime.TryParseExact(parameters[0], "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
+                if (DateTime.TryParseExact(parameters[0], dateFormat, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
                 {
                     c.DataLimiteSubmissao = parameters[0];
                     c.Nome = parameters[1];
@@ -82,21 +79,15 @@ namespace ConferenceManager
 
                     cm.ExecUpdateSubmissionLimitDate(ctx, c);
 
-                    // c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
-                    // if (c != null) Console.WriteLine("DATA LIMITE DE SUBMISSÃO: " + c.DataLimiteSubmissao);
-
                     foreach (var conf in ctx.Conferencias.Find(rev => ((rev.DataLimiteSubmissao == parameters[0]) && (rev.Nome == parameters[1]) && (rev.AnoRealizacao == Int32.Parse(parameters[2])))))
                     {
-                        Console.WriteLine("DATA LIMITE DE SUBMISSÃO: " + conf.DataLimiteSubmissao);
+                        Console.WriteLine($"NEW SUBMISSION LIMIT DATE: {conf.DataLimiteSubmissao}");
                     }
-
-                    Console.WriteLine();
-                    Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                    Console.WriteLine($"\n{pressAnyKeyForANewCommandMessage}\n");
                 }
-                else Console.WriteLine("ERRO NO FORMATO DA NOVA DATA. A NOVA DATA DEVE RESPEITAR 0 FORMATO YYYYMMDD. PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+                else Console.WriteLine($"{invalidNewDateFormatMessage}\n");
             }
-
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
 
             ctx.Dispose();
         }
@@ -105,8 +96,7 @@ namespace ConferenceManager
         {
             ctx.Open();
 
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <EMAIL PRESIDENTE> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <PRESIDENT EMAIL> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Conferencia c = new Conferencia();
@@ -119,19 +109,14 @@ namespace ConferenceManager
 
                 cm.ExecUpdatePresident(ctx, c);
 
-                // c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
-                // if (c != null) Console.WriteLine("PRESIDENTE: " + c.EmailPresidente);
-
                 foreach (var conf in ctx.Conferencias.Find(rev => ((rev.EmailPresidente == parameters[0]) && (rev.Nome == parameters[1]) && (rev.AnoRealizacao == Int32.Parse(parameters[2])))))
                 {
-                    Console.WriteLine("PRESIDENTE: " + conf.EmailPresidente);
+                    Console.WriteLine($"NEW PRESIDENT: {conf.EmailPresidente}");
                 }
 
-                Console.WriteLine();
-                Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                Console.WriteLine($"\n{pressAnyKeyForANewCommandMessage}\n");
             }
-
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
 
             ctx.Dispose();
         }
@@ -140,8 +125,7 @@ namespace ConferenceManager
         {
             ctx.Open();
 
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <EMAIL UTILIZADOR> <RESPONSÁVEL> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <ARTICLE ID> <USER EMAIL> <RESPONSIBLE(0/1)> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Submissao s = new Submissao();
@@ -163,19 +147,14 @@ namespace ConferenceManager
 
                 sm.ExecNewAuthor(ctx, s);
 
-                // s = sm.Read(new Tuple<int, string, string, int>(s.IDArtigo, s.EmailAutor, s.NomeConferencia, s.AnoConferencia));
-                // if (s != null) Console.WriteLine("NOVO AUTOR: " + s.EmailAutor);
-
                 foreach (var autor in ctx.Submissoes.Find(rev => ((rev.IDArtigo == Int32.Parse(parameters[0])) && (rev.EmailAutor == parameters[1]) && (rev.NomeConferencia == parameters[3]) && (rev.AnoConferencia == Int32.Parse(parameters[4])))))
                 {
-                    Console.WriteLine("NOVO AUTOR: " + autor.EmailAutor);
+                    Console.WriteLine($"{autor.EmailAutor} IS NOW AN AUTHOR");
                 }
 
-                Console.WriteLine();
-                Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                Console.WriteLine($"\n{pressAnyKeyForANewCommandMessage}\n");
             }
-
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
 
             ctx.Dispose();
         }
@@ -184,8 +163,7 @@ namespace ConferenceManager
         {
             ctx.Open();
 
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <EMAIL UTILIZADOR> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <ARTICLE ID> <USER EMAIL> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Revisao r = new Revisao();
@@ -199,19 +177,13 @@ namespace ConferenceManager
 
                 rm.ExecNewReviser(ctx, r);
 
-                // r = rm.Read(new Tuple<int, string, string, int>(r.IDArtigo, r.EmailRevisor, r.NomeConferencia, r.AnoConferencia));
-                // if (r != null) Console.WriteLine("NOVO REVISOR: " + r.EmailRevisor);
-
                 foreach (var revisor in ctx.Revisoes.Find(rev => ((rev.IDArtigo == Int32.Parse(parameters[0])) && (rev.EmailRevisor == parameters[1]) && (rev.NomeConferencia == parameters[2]) && (rev.AnoConferencia == Int32.Parse(parameters[3])))))
                 {
-                    Console.WriteLine("NOVO REVISOR: " + revisor.EmailRevisor);
+                    Console.WriteLine($"{revisor.EmailRevisor} IS NOW A REVISER");
                 }
-
-                Console.WriteLine();
-                Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                Console.WriteLine($"\n{pressAnyKeyForANewCommandMessage}\n");
             }
-
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
 
             ctx.Dispose();
         }
@@ -220,8 +192,7 @@ namespace ConferenceManager
         {
             ctx.Open();
 
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <EMAIL UTILIZADOR> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <USER EMAIL> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Conferencia c = new Conferencia();
@@ -234,25 +205,21 @@ namespace ConferenceManager
 
                 cm.ExecAssignPresident(ctx, c);
 
-                // c = cm.Read(new Tuple<string, int>(c.Nome, c.AnoRealizacao));
-                // if (c != null) Console.WriteLine("PRESIDENTE: " + c.EmailPresidente);
-
                 foreach (var presidente in ctx.Conferencias.Find(rev => ((rev.EmailPresidente == parameters[0]) && (rev.Nome == parameters[1]) && (rev.AnoRealizacao == Int32.Parse(parameters[2])))))
                 {
-                    Console.WriteLine("NOVO PRESIDENTE: " + presidente.EmailPresidente);
+                    Console.WriteLine($"{presidente.EmailPresidente} IS NOW A PRESIDENT");
                 }
-
-                Console.WriteLine();
-                Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                Console.WriteLine($"\n{pressAnyKeyForANewCommandMessage}\n");
             }
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
+
         }
 
         public void ListRevisers()
         {
             ctx.Open();
 
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <ID ARTIGO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <ARTICLE ID> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
             
             Artigo a = new Artigo();
@@ -262,13 +229,11 @@ namespace ConferenceManager
                 a.NomeConferencia = parameters[1];
                 a.AnoConferencia = Int32.Parse(parameters[2]);
 
-                Console.WriteLine();
                 am.ExecListCompatibleRevisers(ctx, a);
-                Console.WriteLine();
-                Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
-            }
 
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+                Console.WriteLine($"\n{pressAnyKeyForANewCommandMessage}\n");
+            }
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
 
             ctx.Dispose();
         }
@@ -277,8 +242,7 @@ namespace ConferenceManager
         {
             ctx.Open();
 
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <EMAIL REVISOR> <ID ARTIGO> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <REVISER EMAIL> <ARTICLE ID> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Revisao r = new Revisao();
@@ -292,19 +256,14 @@ namespace ConferenceManager
 
                 rm.ExecAssignReviser(ctx, r);
 
-                // r = rm.Read(new Tuple<int, string, string, int>(r.IDArtigo, r.EmailRevisor, r.NomeConferencia, r.AnoConferencia));
-                // if (r != null) Console.WriteLine("REVISOR: " + r.EmailRevisor);
-
                 foreach (var revisor in ctx.Revisoes.Find(rev => ((rev.EmailRevisor == parameters[0]) && (rev.IDArtigo == Int32.Parse(parameters[1])) && (rev.NomeConferencia == parameters[2]) && (rev.AnoConferencia == Int32.Parse(parameters[3])))))
                 {
-                    Console.WriteLine("REVISOR: " + revisor.EmailRevisor);
+                    Console.WriteLine($"NEW REVISER: {revisor.EmailRevisor}");
                 }
-
-                Console.WriteLine();
-                Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                Console.WriteLine($"\n{pressAnyKeyForANewCommandMessage}\n");
             }
 
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
 
             ctx.Dispose();
         }
@@ -314,17 +273,15 @@ namespace ConferenceManager
         {
             ctx.Open();
 
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <DATA REVISÃO> <NOTA MÍNIMA> <NOTA> <TEXTO> <ID ARTIGO> <EMAIL REVISOR> <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <REVISION DATE> <MINIMUM GRADE> <GRADE> <TEXT> <ARTICLE ID> <REVISER EMAIL> <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Revisao r = new Revisao();
-            Artigo a = new Artigo();
 
             if (parameters.Length == 8)
             {
                 DateTime date;
-                if (DateTime.TryParseExact(parameters[0], "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
+                if (DateTime.TryParseExact(parameters[0], dateFormat, System.Globalization.CultureInfo.InvariantCulture, System.Globalization.DateTimeStyles.None, out date))
                 {
                     r.NotaMinima = Int32.Parse(parameters[1]);
                     r.Nota = Int32.Parse(parameters[2]);
@@ -336,17 +293,6 @@ namespace ConferenceManager
 
                     rm.ExecRegisterRevision(ctx, parameters[0], r);
 
-                    // r = rm.Read(new Tuple<int, string, string, int>(r.IDArtigo, r.EmailRevisor, r.NomeConferencia, r.AnoConferencia));
-                    // if (r != null)
-                    // {
-                    // a = am.Read(new Tuple<int, string, int>(r.IDArtigo, r.NomeConferencia, r.AnoConferencia));
-                    // if (a != null)
-                    // {
-                    // Console.WriteLine("REVISAO: " + r.NotaMinima + " " + r.Nota + " " + r.Texto + " " + r.IDArtigo + " " + r.EmailRevisor + " " + r.NomeConferencia + " " + r.AnoConferencia + " " + r.EmailRevisor + "\n");
-                    // Console.WriteLine("NOVO ESTADO DE ARTIGO: " + a.Estado);
-                    // }
-                    // }
-
                     foreach (var revisao in ctx.Revisoes.Find(rev => ((rev.IDArtigo == Int32.Parse(parameters[4])) && (rev.EmailRevisor == parameters[5]) && (rev.NomeConferencia == parameters[6]) && (rev.AnoConferencia == Int32.Parse(parameters[7])))))
                     {
                         if(revisao != null) {
@@ -354,19 +300,17 @@ namespace ConferenceManager
                             {
                                 if(artigo != null)
                                 {
-                                    Console.WriteLine("REVISAO: " + revisao.NotaMinima + " " + revisao.Nota + " " + revisao.Texto + " " + revisao.IDArtigo + " " + revisao.EmailRevisor + " " + revisao.NomeConferencia + " " + revisao.AnoConferencia + " " + revisao.EmailRevisor + "\n");
-                                    Console.WriteLine("NOVO ESTADO DE ARTIGO: " + artigo.Estado);
+                                    Console.WriteLine($"NEW REVISION: \nidArtigo: {revisao.IDArtigo}\nemailRevisor: {revisao.EmailRevisor}\nnomeConferencia: {revisao.NomeConferencia}\nanoConferencia: {revisao.AnoConferencia}");
+                                    Console.WriteLine($"NEW ARTICLE STATE: {artigo.Estado}");
                                 }
                             }
                         }
                     }
-
-                    Console.WriteLine();
-                    Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                    Console.WriteLine($"\n{pressAnyKeyForANewCommandMessage}\n");
                 }
-                else Console.WriteLine("ERRO NO FORMATO DA DATA DE REVISÃO INSERIDA. PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+                else Console.WriteLine($"{invalidNewDateFormatMessage}\n");
             }
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
 
             ctx.Dispose();
         }
@@ -374,8 +318,7 @@ namespace ConferenceManager
         public void CalcAcceptedSubmissionsRatio() {
             ctx.Open();
 
-            Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("\nFILL THE FIELDS: <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
             Conferencia c = new Conferencia();
@@ -389,19 +332,17 @@ namespace ConferenceManager
 
                 if (ratio != null)
                 {
-                    Console.WriteLine("PERCENTAGEM DE SUBMISSÕES ACEITES: " + ratio + "%");
-                    Console.WriteLine();
-                    Console.WriteLine("PRESSIONE QUALQUER TECLA PARA UM NOVO COMANDO.");
+                    Console.WriteLine($"ACCEPTED SUBMISSION RATIO: {ratio}%");
+                    Console.WriteLine($"\n{pressAnyKeyForANewCommandMessage}\n");
                 }
-                else Console.WriteLine("NÃO FOI POSSÍVEL CALCULAR A PERCENTAGEM. PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+                else Console.WriteLine("IT WAS NOT POSSIBLE TO CALCULATE THE RATIO. PRESS ANY KEY TO TRY AGAIN.");
             }
-
-            else Console.WriteLine("NÚMERO ERRADO DE ARGUMENTOS, PRESSIONE QUALQUER TECLA PARA TENTAR NOVAMENTE.");
+            else Console.WriteLine(invalidNumberOfArgumentsMessage);
 
             ctx.Dispose();
         }
 
         //TO-DO
-        public void ChangeSubmissionState() { }
+        public void ChangeSubmissionState() {throw new NotImplementedException();}
     }
 }

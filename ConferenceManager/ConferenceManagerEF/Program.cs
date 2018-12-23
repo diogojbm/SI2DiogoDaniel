@@ -53,14 +53,14 @@ namespace ConferenceManager
 
         private void UpdateConference()
         {
-            Console.WriteLine("ATUALIZAR CONFERÊNCIA");
+            Console.WriteLine("UPDATE CONFERENCE");
             Console.WriteLine();
-            Console.WriteLine("MENU DE OPÇÕES:");
-            Console.WriteLine("1. ATUALIZAR DATA LIMITE DE REVISÃO");
-            Console.WriteLine("2. ATUALIZAR DATA LIMITE DE SUBMISSÃƒO");
-            Console.WriteLine("3. ATUALIZAR PRESIDENTE");
+            Console.WriteLine("OPTIONS MENU:");
+            Console.WriteLine("1. UPDATE REVISION LIMIT DATE");
+            Console.WriteLine("2. UPDATE SUBMISSION LIMIT DATE");
+            Console.WriteLine("3. UPDATE PRESIDENT");
             Console.WriteLine();
-            Console.WriteLine("SELECIONE A FUNCIONALIDADE QUE DESEJA E PRIMA A TECLA ENTER:");
+            Console.WriteLine("SELECT THE FUNCTIONALITY YOU WANT AND PRESS ENTER KEY:");
             var op = Console.ReadLine().ToString();
 
             if (op == "1")
@@ -78,19 +78,19 @@ namespace ConferenceManager
             }
             else
             {
-                Console.WriteLine("ERRO NA SELEÇÃO DA OPERAÇÃO. POR FAVOR TENTE NOVAMENTE.");
+                Console.WriteLine("OPERATION SELECTION ERROR. PLEASE TRY AGAIN.");
             }
         }
         private void AssignJobToUser()
         {
-            Console.WriteLine("ATRIBUIR PAPEL A UM UTILIZADOR REGISTADO");
+            Console.WriteLine("ASSIGN ROLE TO A REGISTERED USER");
             Console.WriteLine();
-            Console.WriteLine("MENU DE OPÇÕES:");
-            Console.WriteLine("1. ATRIBUIR PAPEL DE AUTOR");
-            Console.WriteLine("2. ATRIBUIR PAPEL DE REVISOR");
-            Console.WriteLine("3. ATRIBUIR PAPEL DE PRESIDENTE");
+            Console.WriteLine("OPTIONS MENU:");
+            Console.WriteLine("1. ASSIGN AUTHOR ROLE");
+            Console.WriteLine("2. ASSIGN REVISER ROLE DE REVISOR");
+            Console.WriteLine("3. ASSIGN PRESIDENT ROLE");
             Console.WriteLine();
-            Console.WriteLine("SELECIONE A FUNCIONALIDADE QUE DESEJA E PRIMA A TECLA ENTER:");
+            Console.WriteLine("SELECT THE FUNCTIONALITY YOU WANT AND PRESS ENTER KEY:");
             var op = Console.ReadLine().ToString();
 
             if (op == "1")
@@ -109,33 +109,33 @@ namespace ConferenceManager
 
         private void ListCompatibleReviewers()
         {
-            Console.WriteLine("LISTAR REVISORES COMPATÍVEIS COM REVISÃO");
+            Console.WriteLine("LIST COMPATIBLE REVISERS WITH A SPECIFIC REVISION");
             service.ListRevisers();
         }
 
         private void AssignReviewerToRevision()
         {
-            Console.WriteLine("ATRIBUIR REVISOR A UMA REVISÃO");
+            Console.WriteLine("ASSIGN REVISER TO A REVISION");
             service.AssignReviser();
         }
 
         private void RegisterRevision()
         {
-            Console.WriteLine("REGISTAR REVISÃO");
+            Console.WriteLine("REGISTER REVISION");
             service.RegisterRevision();
         }
 
         private void CalcAcceptedSubmissionsRatio()
         {
-            Console.WriteLine("PERCENTAGEM DE SUBMISSÕES ACEITES");
+            Console.WriteLine("ACCEPTED SUBMISSIONS RATIO");
             service.CalcAcceptedSubmissionsRatio();
         }
 
         private void ChangeSubmissionState()
         {
-            Console.WriteLine("ALTERAR O ESTADO DE TODAS AS SUBMISSÕES");
+            Console.WriteLine("CHANGE ALL THE SUBMISSIONS' STATE");
             Console.WriteLine();
-            Console.WriteLine("PREENCHA OS CAMPOS: <NOME CONFERÊNCIA> <ANO CONFERÊNCIA>");
+            Console.WriteLine("FILL THE FIELDS: <CONFERENCE NAME> <CONFERENCE YEAR>");
             string[] parameters = Console.ReadLine().Split(' ');
 
         }
@@ -145,24 +145,24 @@ namespace ConferenceManager
             Function function = Function.Unknown;
             try
             {
-                Console.WriteLine("CONFERÊNCIA ACADÉMICA");
+                Console.WriteLine("CONFERENCE MANAGER");
                 Console.WriteLine();
-                Console.WriteLine("1. ATUALIZAR CONFERÊNCIA");
-                Console.WriteLine("2. ATRIBUIR PAPEL A UM UTILIZADOR REGISTADO");
-                Console.WriteLine("3. LISTAR REVISORES COMPATÍVEIS COM REVISÃO");
-                Console.WriteLine("4. ATRIBUIR REVISOR A UMA REVISÃO");
-                Console.WriteLine("5. REGISTAR REVISÃO");
-                Console.WriteLine("6. PERCENTAGEM DE SUBMISSÕES ACEITES");
-                Console.WriteLine("7. ALTERAR O ESTADO DE TODAS AS SUBMISSÕES");
-                Console.WriteLine("0. SAIR");
+                Console.WriteLine("1. UPDATE CONFERENCE");
+                Console.WriteLine("2. ASSIGN A ROLE TO A REGISTERED USER");
+                Console.WriteLine("3. LIST COMPATIBLE REVISERS WITH A REVISION");
+                Console.WriteLine("4. ASSIGN A REVISION TO A REVISER");
+                Console.WriteLine("5. REGISTER REVISION");
+                Console.WriteLine("6. ACCEPTED SUBMISSIONS RATIO");
+                Console.WriteLine("7. CHANGE ALL THE SUBMISSIONS' STATE");
+                Console.WriteLine("0. EXIT");
                 Console.WriteLine();
-                Console.WriteLine("SELECIONE A FUNCIONALIDADE QUE DESEJA E PRIMA A TECLA ENTER:");
+                Console.WriteLine("SELECT THE FUNCTIONALITY YOU WANT AND PRESS ENTER KEY:");
                 var result = Console.ReadLine();
                 function = (Function)Enum.Parse(typeof(Function), result);
             }
             catch (ArgumentException ex)
             {
-                Console.WriteLine("ERRO NA SELEÇÃO DE OPERAÇÃO: " + ex.Message);
+                Console.WriteLine("OPERATION SELECTION ERROR " + ex.Message);
             }
 
             return function;

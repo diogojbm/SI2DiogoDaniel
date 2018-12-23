@@ -36,6 +36,20 @@ namespace ConferenceManagerEF
         public virtual DbSet<Submissao> Submissaos { get; set; }
         public virtual DbSet<Utilizador> Utilizadors { get; set; }
     
+        [DbFunction("ConferenceManagerEntities", "PercentagemSub")]
+        public virtual IQueryable<PercentagemSub_Result> PercentagemSub(string nomeConferencia, Nullable<int> anoConferencia)
+        {
+            var nomeConferenciaParameter = nomeConferencia != null ?
+                new ObjectParameter("nomeConferencia", nomeConferencia) :
+                new ObjectParameter("nomeConferencia", typeof(string));
+    
+            var anoConferenciaParameter = anoConferencia.HasValue ?
+                new ObjectParameter("anoConferencia", anoConferencia) :
+                new ObjectParameter("anoConferencia", typeof(int));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.CreateQuery<PercentagemSub_Result>("[ConferenceManagerEntities].[PercentagemSub](@nomeConferencia, @anoConferencia)", nomeConferenciaParameter, anoConferenciaParameter);
+        }
+    
         public virtual int AtribuirPapelAutor(Nullable<int> idArtigo, string email, Nullable<bool> responsavel, string nomeConferencia, Nullable<int> anoConferencia)
         {
             var idArtigoParameter = idArtigo.HasValue ?
